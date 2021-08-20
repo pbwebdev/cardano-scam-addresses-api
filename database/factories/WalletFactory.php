@@ -22,7 +22,7 @@ class WalletFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'address' => $this->faker->sha256(),
         ];
     }
 }
