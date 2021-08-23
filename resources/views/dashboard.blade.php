@@ -14,4 +14,10 @@
             </div>
         </div>
     </div>
+
+    <div class="container mx-auto">
+        <x-passport-authorized-clients></x-passport-authorized-clients>
+        <x-passport-clients></x-passport-clients>
+        <x-passport-personal-access-tokens></x-passport-personal-access-tokens>
+    </div>
 </x-app-layout>
