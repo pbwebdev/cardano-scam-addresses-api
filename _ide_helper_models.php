@@ -46,7 +46,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\WalletResource
+ * App\Models\Wallet
  *
  * @property int $id
  * @property string $address
@@ -62,5 +62,25 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Wallet whereUpdatedAt($value)
  */
 	class Wallet extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Website
+ *
+ * @property int $id
+ * @property string $address
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Database\Factories\WebsiteFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Website newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Website newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Website query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Website whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Website whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Website whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Website whereUpdatedAt($value)
+ */
+	class Website extends \Eloquent {}
 }
 

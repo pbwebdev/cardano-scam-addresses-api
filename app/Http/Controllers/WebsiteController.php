@@ -6,47 +6,16 @@ use App\Http\Requests\WebsiteRequest;
 use App\Http\Resources\WebsiteCollection;
 use App\Http\Resources\WebsiteResource;
 use App\Models\Website;
+use Illuminate\Http\JsonResponse;
 
 class WebsiteController extends Controller
 {
     /**
-     * Send a JSON response back to an Ajax request, indicating success.
-     *
-     * @param $data
-     * @param  int  $code
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    private function sendSuccess($data, $code = 200)
-    {
-        return response()->json([
-            'success' => true,
-            'data'    => $data,
-        ], $code);
-    }
-
-    /**
-     * Send a JSON response back to an Ajax request, indicating failure.
-     *
-     * @param $error
-     * @param  int  $code
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    private function sendFail($error, $code = 404)
-    {
-        return response()->json([
-            'success' => false,
-            'error'   => $error,
-        ], $code);
-    }
-
-    /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $data = new WebsiteCollection(Website::all());
 
@@ -58,9 +27,9 @@ class WebsiteController extends Controller
      *
      * @param  WebsiteRequest  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function store(WebsiteRequest $request)
+    public function store(WebsiteRequest $request): JsonResponse
     {
         $data = $request->validated();
         $website = Website::create($data);
@@ -71,11 +40,11 @@ class WebsiteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Website  $website
+     * @param  string  $website
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function show($website)
+    public function show(string $website): JsonResponse
     {
         $data = Website::where('address', $website)->first();
 
@@ -92,11 +61,11 @@ class WebsiteController extends Controller
      * Update the specified resource in storage.
      *
      * @param  WebsiteRequest  $request
-     * @param  \App\Models\Website         $website
+     * @param  Website         $website
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function update(WebsiteRequest $request, Website $website)
+    public function update(WebsiteRequest $request, Website $website): JsonResponse
     {
         $data = $request->validated();
 
@@ -108,11 +77,11 @@ class WebsiteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Website  $website
+     * @param  Website  $website
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function destroy(Website $website)
+    public function destroy(Website $website): JsonResponse
     {
         $website->delete();
 

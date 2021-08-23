@@ -6,47 +6,16 @@ use App\Http\Requests\WalletRequest;
 use App\Http\Resources\WalletResource;
 use App\Http\Resources\WalletCollection;
 use App\Models\Wallet;
+use Illuminate\Http\JsonResponse;
 
 class WalletController extends Controller
 {
     /**
-     * Send a JSON response back to an Ajax request, indicating success.
-     *
-     * @param $data
-     * @param  int  $code
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    private function sendSuccess($data, $code = 200)
-    {
-        return response()->json([
-            'success' => true,
-            'data'    => $data,
-        ], $code);
-    }
-
-    /**
-     * Send a JSON response back to an Ajax request, indicating failure.
-     *
-     * @param $error
-     * @param  int  $code
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    private function sendFail($error, $code = 404)
-    {
-        return response()->json([
-            'success' => false,
-            'error'   => $error,
-        ], $code);
-    }
-
-    /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $data = new WalletCollection(Wallet::all());
 
@@ -58,9 +27,9 @@ class WalletController extends Controller
      *
      * @param  WalletRequest  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function store(WalletRequest $request)
+    public function store(WalletRequest $request): JsonResponse
     {
         $data = $request->validated();
         $wallet = Wallet::create($data);
@@ -71,11 +40,11 @@ class WalletController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Wallet  $wallet
+     * @param  string  $wallet
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function show($wallet)
+    public function show(string $wallet): JsonResponse
     {
         $data = Wallet::where('address', $wallet)->first();
 
@@ -92,11 +61,11 @@ class WalletController extends Controller
      * Update the specified resource in storage.
      *
      * @param  WalletRequest  $request
-     * @param  \App\Models\Wallet  $wallet
+     * @param  Wallet         $wallet
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function update(WalletRequest $request, Wallet $wallet)
+    public function update(WalletRequest $request, Wallet $wallet): JsonResponse
     {
         $data = $request->validated();
 
@@ -108,11 +77,11 @@ class WalletController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Wallet  $wallet
+     * @param  Wallet  $wallet
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function destroy(Wallet $wallet)
+    public function destroy(Wallet $wallet): JsonResponse
     {
         $wallet->delete();
 
