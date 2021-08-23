@@ -42,6 +42,18 @@ class WalletController extends Controller
     }
 
     /**
+     * @param  Request  $request
+     *
+     * @return array
+     */
+    private function validateData(Request $request)
+    {
+        return $this->validate($request, [
+            'address' => 'required|string',
+        ]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\JsonResponse
@@ -57,11 +69,15 @@ class WalletController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        $data = $this->validateData($request);
+        $wallet = Wallet::create($data);
+
+        return $this->show($wallet->address);
     }
 
     /**
@@ -89,21 +105,29 @@ class WalletController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Wallet  $wallet
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, Wallet $wallet)
     {
-        //
+        $data = $this->validateData($request);
+
+        $wallet->update($data);
+
+        return $this->show($wallet->address);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Wallet  $wallet
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Wallet $wallet)
     {
-        //
+        $wallet->delete();
+
+        return $this->index();
     }
 }
