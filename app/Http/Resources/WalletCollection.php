@@ -14,6 +14,6 @@ class WalletCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection->pluck('address')->toArray();
+        return parent::toArray($request);
     }
 }

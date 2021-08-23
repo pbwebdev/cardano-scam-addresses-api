@@ -15,8 +15,8 @@ class Wallet extends JsonResource
     public function toArray($request)
     {
         return [
+            'id'      => $this->id,
             'address' => $this->address,
-            'flagged' => true,
         ];
     }
 }
