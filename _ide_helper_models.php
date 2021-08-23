@@ -46,7 +46,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Wallet
+ * App\Models\WalletResource
  *
  * @property int $id
  * @property string $address

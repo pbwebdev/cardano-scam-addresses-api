@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Wallet as WalletResource;
+use App\Http\Resources\WalletResource;
 use App\Http\Resources\WalletCollection;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
