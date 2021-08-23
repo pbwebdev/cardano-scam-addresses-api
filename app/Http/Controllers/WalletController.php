@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\WalletRequest;
 use App\Http\Resources\WalletResource;
 use App\Http\Resources\WalletCollection;
 use App\Models\Wallet;
-use Illuminate\Http\Request;
 
 class WalletController extends Controller
 {
@@ -42,18 +42,6 @@ class WalletController extends Controller
     }
 
     /**
-     * @param  Request  $request
-     *
-     * @return array
-     */
-    private function validateData(Request $request)
-    {
-        return $this->validate($request, [
-            'address' => 'required|string',
-        ]);
-    }
-
-    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\JsonResponse
@@ -68,13 +56,13 @@ class WalletController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  WalletRequest  $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(WalletRequest $request)
     {
-        $data = $this->validateData($request);
+        $data = $request->validated();
         $wallet = Wallet::create($data);
 
         return $this->show($wallet->address);
@@ -103,14 +91,14 @@ class WalletController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  WalletRequest  $request
      * @param  \App\Models\Wallet  $wallet
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Wallet $wallet)
+    public function update(WalletRequest $request, Wallet $wallet)
     {
-        $data = $this->validateData($request);
+        $data = $request->validated();
 
         $wallet->update($data);
 
