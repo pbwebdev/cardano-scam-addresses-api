@@ -2,11 +2,16 @@
 
 namespace App\Exceptions;
 
+use App\Traits\HasJsonResponse;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use HasJsonResponse;
+
     /**
      * A list of the exception types that are not reported.
      *
@@ -32,10 +37,32 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
+        $this->reportable(static function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  Request    $request
+     * @param  Throwable  $e
+     * @return Response
+     *
+     * @throws Throwable
+     */
+    public function render($request, Throwable $e): Response
+    {
+        $response = parent::render($request, $e);
+
+        if ($request->expectsJson()) {
+            $data = $response->getData(true);
+
+            return $this->sendFail($data['message'], $response->getStatusCode());
+        }
+
+        return $response;
     }
 }
