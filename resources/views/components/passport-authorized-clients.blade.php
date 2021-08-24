@@ -34,7 +34,7 @@
                                 <!-- Scopes -->
                                 <td class="p-4">
                                     <template x-if="token.scopes.length > 0">
-                                        <span x-text="token.scopes.implode(', ')"></span>
+                                        <span x-text="token.scopes.join(', ')"></span>
                                     </template>
                                 </td>
 

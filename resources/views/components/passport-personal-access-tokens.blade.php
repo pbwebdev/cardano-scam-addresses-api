@@ -24,6 +24,7 @@
                     <thead>
                         <tr>
                             <th class="p-4 border border-blue-400 text-left">Name</th>
+                            <th class="p-4 border border-blue-400 w-72">Scopes</th>
                             <th class="p-4 border border-blue-400 w-32">Action</th>
                         </tr>
                     </thead>
@@ -33,6 +34,13 @@
                             <tr>
                                 <!-- Client Name -->
                                 <td class="p-4" x-text="token.name"></td>
+
+                                <!-- Scopes -->
+                                <td class="p-4">
+                                    <template x-if="token.scopes.length > 0">
+                                        <div x-text="token.scopes.join(', ')"></div>
+                                    </template>
+                                </td>
 
                                 <!-- Delete Button -->
                                 <td class="p-4 text-center">
@@ -211,7 +219,6 @@
                 axios.post('/oauth/personal-access-tokens', this.form)
                     .then(response => {
                         this.form.name = '';
-                        this.form.scopes = [];
                         this.form.errors = [];
 
                         this.tokens.push(response.data.token);
