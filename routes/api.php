@@ -20,8 +20,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api')->apiResource('wallets', WalletController::class)->except(['index', 'show']);
+Route::middleware(['auth:api', 'scopes:write_wallet'])->apiResource('wallets', WalletController::class)
+    ->except(['index', 'show']);
 Route::apiResource('wallets', WalletController::class)->only(['index', 'show']);
 
-Route::middleware('auth:api')->apiResource('websites', WebsiteController::class)->except(['index', 'show']);
+Route::middleware(['auth:api', 'scopes:write_website'])->apiResource('websites', WebsiteController::class)
+    ->except(['index', 'show']);
 Route::apiResource('websites', WebsiteController::class)->only(['index', 'show']);

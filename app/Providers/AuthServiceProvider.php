@@ -28,6 +28,10 @@ class AuthServiceProvider extends ServiceProvider
 
         if (! $this->app->routesAreCached()) {
             Passport::routes();
+            Passport::tokensCan([
+                'write_wallet'  => 'Manage Wallets',
+                'write_website' => 'Manage Websites',
+            ]);
         }
     }
 }
