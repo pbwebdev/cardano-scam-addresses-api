@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Passport\Passport;
@@ -26,7 +27,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        if (! $this->app->routesAreCached()) {
+        Gate::define('administrate', function (User $user) {
+            return $user->isAdministrator();
+        });
+
+        if (!$this->app->routesAreCached()) {
             Passport::routes();
             Passport::tokensCan([
                 'write_wallet'  => 'Manage Wallets',

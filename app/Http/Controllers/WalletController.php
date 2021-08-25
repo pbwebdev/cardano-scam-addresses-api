@@ -3,13 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\WalletRequest;
-use App\Http\Resources\WalletResource;
 use App\Http\Resources\WalletCollection;
+use App\Http\Resources\WalletResource;
 use App\Models\Wallet;
 use Illuminate\Http\JsonResponse;
 
 class WalletController extends Controller
 {
+    /**
+     * Create a new Wallet controller instance
+     */
+    public function __construct()
+    {
+        $this->middleware('can:administrate')->only(['update', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *

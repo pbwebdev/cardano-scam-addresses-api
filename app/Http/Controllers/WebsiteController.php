@@ -11,6 +11,14 @@ use Illuminate\Http\JsonResponse;
 class WebsiteController extends Controller
 {
     /**
+     * Create a new Website controller instance
+     */
+    public function __construct()
+    {
+        $this->middleware('can:administrate')->only(['update', 'destroy']);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return JsonResponse
