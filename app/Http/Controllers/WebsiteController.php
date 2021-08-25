@@ -42,7 +42,7 @@ class WebsiteController extends Controller
         $data = $request->validated();
         $website = Website::create($data);
 
-        return $this->show($website->address);
+        return $this->show($website->getAttributeValue('address'));
     }
 
     /**
@@ -79,7 +79,7 @@ class WebsiteController extends Controller
 
         $website->update($data);
 
-        return $this->show($website->address);
+        return $this->show($website->getAttributeValue('address'));
     }
 
     /**

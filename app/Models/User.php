@@ -50,6 +50,6 @@ class User extends Authenticatable
      */
     public function isAdministrator(): bool
     {
-        return $this->is_admin;
+        return $this->getAttributeValue('is_admin');
     }
 }

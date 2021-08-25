@@ -2,21 +2,31 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Wallet;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class WalletResource extends JsonResource
 {
     /**
+     * The resource instance.
+     *
+     * @var Wallet
+     */
+    public $resource;
+
+    /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
+     *
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
-            'id'      => $this->id,
-            'address' => $this->address,
+            'id'      => $this->resource->getAttributeValue('id'),
+            'address' => $this->resource->getAttributeValue('address'),
         ];
     }
 }

@@ -42,7 +42,7 @@ class WalletController extends Controller
         $data = $request->validated();
         $wallet = Wallet::create($data);
 
-        return $this->show($wallet->address);
+        return $this->show($wallet->getAttributeValue('address'));
     }
 
     /**
@@ -79,7 +79,7 @@ class WalletController extends Controller
 
         $wallet->update($data);
 
-        return $this->show($wallet->address);
+        return $this->show($wallet->getAttributeValue('address'));
     }
 
     /**
