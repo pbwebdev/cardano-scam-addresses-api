@@ -23,7 +23,7 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
 
@@ -31,7 +31,7 @@ class AuthServiceProvider extends ServiceProvider
             return $user->isAdministrator();
         });
 
-        if (!$this->app->routesAreCached()) {
+        if (! $this->app->routesAreCached()) {
             Passport::routes();
             Passport::tokensCan([
                 'write_wallet'  => 'Manage Wallets',
