@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\WebsiteAddress;
 use Illuminate\Foundation\Http\FormRequest;
 
 class WebsiteRequest extends FormRequest
@@ -24,7 +25,12 @@ class WebsiteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'address' => 'required|string|unique:websites',
+            'address' => [
+                'required',
+                'string',
+                'unique:websites',
+                new WebsiteAddress(),
+            ],
         ];
     }
 }

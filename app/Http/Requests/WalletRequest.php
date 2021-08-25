@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CardanoAddress;
 use Illuminate\Foundation\Http\FormRequest;
 
 class WalletRequest extends FormRequest
@@ -24,7 +25,12 @@ class WalletRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'address' => 'required|string|unique:wallets',
+            'address' => [
+                'required',
+                'string',
+                'unique:wallets',
+                new CardanoAddress(),
+            ],
         ];
     }
 }
