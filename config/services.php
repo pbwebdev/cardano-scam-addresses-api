@@ -30,4 +30,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'blockfrost' => [
+        'network' => env('BLOCKFROST_NETWORK'),
+        'project_id' => env('BLOCKFROST_PROJECT_ID'),
+    ],
 ];
