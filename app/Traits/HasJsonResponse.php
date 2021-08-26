@@ -27,16 +27,18 @@ trait HasJsonResponse
     /**
      * Send a JSON response back to an Ajax request, indicating failure.
      *
-     * @param  string  $error
+     * @param  string  $message
      * @param  int     $code
+     * @param  array   $errors
      *
      * @return JsonResponse
      */
-    protected function sendFail(string $error, int $code = 404): JsonResponse
+    protected function sendFail(string $message, int $code = 404, array $errors = []): JsonResponse
     {
         return response()->json([
             'success' => false,
-            'error'   => $error,
+            'message' => $message,
+            'errors'  => $errors,
         ], $code);
     }
 }

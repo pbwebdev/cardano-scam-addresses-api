@@ -61,7 +61,7 @@ class Handler extends ExceptionHandler
         if ($request->expectsJson()) {
             $data = $response->getData(true);
 
-            return $this->sendFail($data['message'], $response->getStatusCode());
+            return $this->sendFail($data['message'], $response->getStatusCode(), $data['errors'] ?? []);
         }
 
         return $response;
