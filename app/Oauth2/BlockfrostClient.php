@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\JsonResponse;
 use JsonException;
 
-class Blockfrost
+class BlockfrostClient
 {
     private $client;
     private $project_id;
@@ -19,7 +19,7 @@ class Blockfrost
     ];
 
     /**
-     * Create a new Blockfrost instance
+     * Create a new BlockfrostClient instance
      */
     public function __construct($project_id, $network = 'testnet')
     {

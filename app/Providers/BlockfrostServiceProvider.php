@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use App\Oauth2\Blockfrost;
+use App\Blockfrost;
+use App\Oauth2\BlockfrostClient;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,8 +16,15 @@ class BlockfrostServiceProvider extends ServiceProvider implements DeferrablePro
      */
     public function register(): void
     {
-        $this->app->bind(Blockfrost::class, function () {
-            return new Blockfrost(config('services.blockfrost.project_id'), config('services.blockfrost.network'));
+        $this->app->bind(BlockfrostClient::class, function () {
+            return new BlockfrostClient(
+                config('services.blockfrost.project_id'),
+                config('services.blockfrost.network')
+            );
+        });
+
+        $this->app->singleton(Blockfrost::class, function ($app) {
+            return new Blockfrost($app->make(BlockfrostClient::class));
         });
     }
 
@@ -37,6 +45,9 @@ class BlockfrostServiceProvider extends ServiceProvider implements DeferrablePro
      */
     public function provides(): array
     {
-        return [Blockfrost::class];
+        return [
+            BlockfrostClient::class,
+            Blockfrost::class,
+        ];
     }
 }
