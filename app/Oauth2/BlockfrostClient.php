@@ -51,8 +51,8 @@ class BlockfrostClient
             $response = $this->client->request('GET', $endpoint, $options);
 
             $value = [
-                'code' => $response->getStatusCode(),
-                'data' => json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR),
+                'status_code' => $response->getStatusCode(),
+                'data'        => json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR),
             ];
         } catch (RequestException $error) {
             $response = $error->getResponse();
@@ -61,22 +61,22 @@ class BlockfrostClient
                 $value = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
             } catch (JsonException $e) {
                 $value = [
-                    'code'  => 500,
-                    'error' => $e->getMessage(),
+                    'status_code' => 500,
+                    'error'       => $e->getMessage(),
                 ];
             }
         } catch (GuzzleException $e) {
             $value = [
-                'code'  => 500,
-                'error' => $e->getMessage(),
+                'status_code' => 500,
+                'error'       => $e->getMessage(),
             ];
         } catch (JsonException $e) {
             $value = [
-                'code'  => 500,
-                'error' => $e->getMessage(),
+                'status_code' => 500,
+                'error'       => $e->getMessage(),
             ];
         } finally {
-            return new JsonResponse($value);
+            return new JsonResponse($value['data'] ?? [], $value['status_code']);
         }
     }
 }

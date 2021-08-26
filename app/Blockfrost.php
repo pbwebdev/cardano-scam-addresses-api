@@ -18,4 +18,24 @@ class Blockfrost
     {
         $this->client = $client;
     }
+
+    /**
+     * Get the stake address that controls the key
+     *
+     * @param $key
+     *
+     * @return string
+     */
+    public function getStakeAddress($key): string
+    {
+        $response = $this->client->request('addresses/' . $key);
+
+        if ($response->isClientError()) {
+            return '';
+        }
+
+        $data = $response->getData(true);
+
+        return $data['stake_address'];
+    }
 }
