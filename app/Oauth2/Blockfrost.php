@@ -5,6 +5,8 @@ namespace App\Oauth2;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Http\JsonResponse;
+use JsonException;
 
 class Blockfrost
 {
@@ -33,9 +35,9 @@ class Blockfrost
      * @param  string  $endpoint
      * @param  array   $params
      *
-     * @return array
+     * @return JsonResponse
      */
-    public function request(string $endpoint, array $params = []): array
+    public function request(string $endpoint, array $params = []): JsonResponse
     {
         try {
             $options = array_merge(
@@ -43,24 +45,38 @@ class Blockfrost
                     'headers' => [
                         'project_id' => $this->project_id
                     ],
-                    'query' => $params,
+                    'query'   => $params,
                 ],
             );
             $response = $this->client->request('GET', $endpoint, $options);
 
-            return [
+            $value = [
                 'code' => $response->getStatusCode(),
-                'data' => json_decode($response->getBody(), true),
+                'data' => json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR),
             ];
         } catch (RequestException $error) {
             $response = $error->getResponse();
 
-            return json_decode($response->getBody(), true);
+            try {
+                $value = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+            } catch (JsonException $e) {
+                $value = [
+                    'code'  => 500,
+                    'error' => $e->getMessage(),
+                ];
+            }
         } catch (GuzzleException $e) {
-            return [
+            $value = [
                 'code'  => 500,
                 'error' => $e->getMessage(),
             ];
+        } catch (JsonException $e) {
+            $value = [
+                'code'  => 500,
+                'error' => $e->getMessage(),
+            ];
+        } finally {
+            return new JsonResponse($value);
         }
     }
 }
