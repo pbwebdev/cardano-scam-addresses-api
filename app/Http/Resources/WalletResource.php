@@ -24,6 +24,7 @@ class WalletResource extends JsonResource
      */
     public function toArray($request): array
     {
+        /** @noinspection NullPointerExceptionInspection */
         $method = $request->route()->getActionMethod();
         $key = 'index' === $method ? 'address' : 'stake_address';
         $values = [
@@ -37,8 +38,6 @@ class WalletResource extends JsonResource
             if (0 === strpos($address, 'addr1')) {
                 $values['address'] = $address;
             }
-        } elseif ('store' === $method) {
-            $values['address'] = $request->input('address');
         }
 
         return $values;

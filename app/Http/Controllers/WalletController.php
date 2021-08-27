@@ -52,10 +52,13 @@ class WalletController extends Controller
     public function store(WalletRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $data['address'] = $this->blockfrost->getStakeAddress($data['address']);
 
-        if (! $data['address']) {
-            return $this->sendFail('Invalid address');
+        if (0 === strpos($data['address'], 'addr1')) {
+            $data['address'] = $this->blockfrost->getStakeAddress($data['address']);
+
+            if (! $data['address']) {
+                return $this->sendFail('Invalid address');
+            }
         }
 
         $validator = Validator::make($data, $request->rules());
