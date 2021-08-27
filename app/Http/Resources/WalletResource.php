@@ -24,9 +24,19 @@ class WalletResource extends JsonResource
      */
     public function toArray($request): array
     {
-        return [
-            'id'      => $this->resource->getAttributeValue('id'),
-            'address' => $this->resource->getAttributeValue('address'),
+        $method = $request->route()->getActionMethod();
+        $key = 'index' === $method ? 'address' : 'stake_address';
+        $values = [
+            'id' => $this->resource->getAttributeValue('id'),
+            $key => $this->resource->getAttributeValue('address'),
         ];
+
+        if ('show' === $method) {
+            $values['address'] = $request->route('wallet');
+        } elseif ('store' === $method) {
+            $values['address'] = $request->input('address');
+        }
+
+        return $values;
     }
 }
