@@ -2,20 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Blockfrost;
 use App\Http\Requests\WalletRequest;
 use App\Http\Resources\WalletCollection;
 use App\Http\Resources\WalletResource;
 use App\Models\Wallet;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Validator;
 
 class WalletController extends Controller
 {
+    /**
+     * @var Blockfrost
+     */
+    private $blockfrost;
+
     /**
      * Create a new Wallet controller instance
      */
     public function __construct()
     {
         $this->middleware('can:administrate')->only(['update', 'destroy']);
+
+        $this->blockfrost = app()->make(Blockfrost::class);
     }
 
     /**
@@ -40,9 +49,19 @@ class WalletController extends Controller
     public function store(WalletRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $wallet = Wallet::create($data);
+        $data['address'] = $this->blockfrost->getStakeAddress($data['address']);
 
-        return $this->show($wallet->getAttributeValue('address'));
+        if (! $data['address']) {
+            return $this->sendFail('Invalid address');
+        }
+
+        $validator = Validator::make($data, ['address' => 'unique:wallets']);
+
+        $wallet = Wallet::create($validator->validated());
+
+        $resource = new WalletResource($wallet);
+
+        return $this->sendSuccess($resource);
     }
 
     /**
@@ -54,7 +73,13 @@ class WalletController extends Controller
      */
     public function show(string $wallet): JsonResponse
     {
-        $data = Wallet::where('address', $wallet)->first();
+        $stake_address = $this->blockfrost->getStakeAddress($wallet);
+
+        if (! $stake_address) {
+            return $this->sendFail('Invalid address');
+        }
+
+        $data = Wallet::where('address', $stake_address)->first();
 
         if (is_null($data)) {
             return $this->sendFail('Not found');
@@ -79,7 +104,9 @@ class WalletController extends Controller
 
         $wallet->update($data);
 
-        return $this->show($wallet->getAttributeValue('address'));
+        $resource = new WalletResource($wallet);
+
+        return $this->sendSuccess($resource);
     }
 
     /**
