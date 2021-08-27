@@ -26,7 +26,7 @@ class CardanoAddress implements Rule
      */
     public function passes($attribute, $value): bool
     {
-        if (0 !== strpos($value, 'addr1')) {
+        if (0 !== strpos($value, 'addr1') && 0 !== strpos($value, 'stake1')) {
             return false;
         }
 

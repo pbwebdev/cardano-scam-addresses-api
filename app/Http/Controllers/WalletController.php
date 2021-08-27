@@ -55,7 +55,7 @@ class WalletController extends Controller
             return $this->sendFail('Invalid address');
         }
 
-        $validator = Validator::make($data, ['address' => 'unique:wallets']);
+        $validator = Validator::make($data, $request->rules());
 
         $wallet = Wallet::create($validator->validated());
 
