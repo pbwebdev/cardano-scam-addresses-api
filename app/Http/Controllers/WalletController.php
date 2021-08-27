@@ -7,6 +7,7 @@ use App\Http\Requests\WalletRequest;
 use App\Http\Resources\WalletCollection;
 use App\Http\Resources\WalletResource;
 use App\Models\Wallet;
+use App\Rules\CardanoAddress;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 
@@ -67,19 +68,21 @@ class WalletController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  string  $wallet
+     * @param  string  $key
      *
      * @return JsonResponse
      */
-    public function show(string $wallet): JsonResponse
+    public function show(string $key): JsonResponse
     {
-        $stake_address = $this->blockfrost->getStakeAddress($wallet);
+        $validator = Validator::make(['address' => $key], ['address' => new CardanoAddress()]);
 
-        if (! $stake_address) {
-            return $this->sendFail('Invalid address');
+        $validated = $validator->validated();
+
+        if (0 === strpos($validated['address'], 'addr1')) {
+            $validated['address'] = $this->blockfrost->getStakeAddress($validated['address']);
         }
 
-        $data = Wallet::where('address', $stake_address)->first();
+        $data = Wallet::where('address', $validated['address'])->first();
 
         if (is_null($data)) {
             return $this->sendFail('Not found');
