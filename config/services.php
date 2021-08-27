@@ -31,7 +31,7 @@ return [
     ],
 
     'blockfrost' => [
-        'network' => env('BLOCKFROST_NETWORK'),
+        'network' => env('BLOCKFROST_NETWORK', 'testnet'),
         'project_id' => env('BLOCKFROST_PROJECT_ID'),
     ],
 ];

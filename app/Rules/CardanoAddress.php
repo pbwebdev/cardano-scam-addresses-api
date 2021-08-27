@@ -11,6 +11,11 @@ class CardanoAddress implements Rule
         'testnet' => 'addr_test1',
     ];
 
+    protected const STAKES = [
+        'mainnet' => 'stake1',
+        'testnet' => 'stake_test1',
+    ];
+
     /**
      * @var string
      */
@@ -78,7 +83,9 @@ class CardanoAddress implements Rule
      */
     public function isStake(string $address): bool
     {
-        return false !== strpos($address, 'stake1');
+        $hrp = self::STAKES[$this->network];
+
+        return false !== strpos($address, $hrp);
     }
 
 
