@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\CardanoAddress;
+use App\Rules\Bech32Address;
 use Illuminate\Foundation\Http\FormRequest;
 
 class WalletRequest extends FormRequest
@@ -37,7 +37,7 @@ class WalletRequest extends FormRequest
                 'required',
                 'string',
                 'unique:wallets',
-                new CardanoAddress(),
+                new Bech32Address(),
             ],
         ];
     }

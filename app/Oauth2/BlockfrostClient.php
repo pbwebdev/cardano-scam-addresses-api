@@ -23,6 +23,10 @@ class BlockfrostClient
      */
     public function __construct($project_id, $network = 'testnet')
     {
+        if (! array_key_exists($network, self::ENDPOINT)) {
+            $network = 'testnet';
+        }
+
         $this->client = new Client([
             'base_uri' => self::ENDPOINT[$network],
         ]);

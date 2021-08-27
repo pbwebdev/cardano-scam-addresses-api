@@ -2,15 +2,19 @@
 
 namespace App\Rules;
 
-use App\Bech32;
 use Illuminate\Contracts\Validation\Rule;
 
 class CardanoAddress implements Rule
 {
+    protected const HRPS = [
+        'mainnet' => 'addr1',
+        'testnet' => 'addr_test1',
+    ];
+
     /**
-     * @var Bech32
+     * @var string
      */
-    private $bech32;
+    private $network;
 
     /**
      * Create a new rule instance.
@@ -19,7 +23,13 @@ class CardanoAddress implements Rule
      */
     public function __construct()
     {
-        $this->bech32 = new Bech32();
+        $network = config('services.blockfrost.network');
+
+        if (! array_key_exists($network, self::HRPS)) {
+            $network = 'testnet';
+        }
+
+        $this->network = $network;
     }
 
     /**
@@ -32,11 +42,7 @@ class CardanoAddress implements Rule
      */
     public function passes($attribute, $value): bool
     {
-        if (0 !== strpos($value, 'addr1') && 0 !== strpos($value, 'stake1')) {
-            return false;
-        }
-
-        return $this->isValid($value);
+        return $this->isValid($value) || $this->isStake($value);
     }
 
     /**
@@ -46,11 +52,11 @@ class CardanoAddress implements Rule
      */
     public function message(): string
     {
-        return 'The :attribute must be in Native SegWit (Bech32) format.';
+        return 'The :attribute must be from the ' . $this->getCurrentNetwork() . '.';
     }
 
     /**
-     * Check if an address is a valid Bech32
+     * Check if an address is from correct network.
      *
      * @param  string  $address
      *
@@ -58,8 +64,29 @@ class CardanoAddress implements Rule
      */
     public function isValid(string $address): bool
     {
-        $decoded = $this->bech32->decode($address, Bech32::ENCODINGS['original']);
+        $hrp = self::HRPS[$this->network];
 
-        return is_array($decoded);
+        return false !== strpos($address, $hrp);
+    }
+
+    /**
+     * Check if a stake address.
+     *
+     * @param  string  $address
+     *
+     * @return bool
+     */
+    public function isStake(string $address): bool
+    {
+        return false !== strpos($address, 'stake1');
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getCurrentNetwork(): string
+    {
+        return $this->network . ' network';
     }
 }

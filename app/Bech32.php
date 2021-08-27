@@ -8,24 +8,32 @@ class Bech32
 
     protected const GENERATOR = [0x3b6a57b2, 0x26508e6d, 0x1ea119fa, 0x3d4233dd, 0x2a1462b3];
 
-    public const ENCODINGS = [
-        'original' => "bech32",
-        'modified' => "bech32m",
-    ];
+    /**
+     * @var string
+     */
+    protected $encoding;
+
+    /**
+     * Create a new Bech32 instance
+     *
+     * @param  string  $encoding
+     */
+    public function __construct(string $encoding = 'original')
+    {
+        $this->encoding = $encoding;
+    }
 
 
     /**
-     * @param $enc
-     *
      * @return int|null
      */
-    protected function getEncodingConst($enc): ?int
+    protected function getEncodingConst(): ?int
     {
-        if ($enc === self::ENCODINGS['original']) {
+        if ('original' === $this->encoding) {
             return 1;
         }
 
-        if ($enc === self::ENCODINGS['modified']) {
+        if ('modified' === $this->encoding) {
             return 0x2bc830a3;
         }
 
@@ -81,26 +89,29 @@ class Bech32
     /**
      * @param  string  $hrp
      * @param  array   $data
-     * @param  string  $enc
      *
      * @return bool
      */
-    protected function verifyChecksum(string $hrp, array $data, string $enc): bool
+    protected function verifyChecksum(string $hrp, array $data): bool
     {
         $values = array_merge($this->hrpExpand($hrp), $data);
 
-        return $this->polyMod($values) === $this->getEncodingConst($enc);
+        return $this->polyMod($values) === $this->getEncodingConst();
     }
 
     /**
      * @param  string  $bechString
-     * @param  string  $enc
      *
      * @return array|null
      */
-    public function decode(string $bechString, string $enc): ?array
+    public function decode(string $bechString): ?array
     {
         $length = strlen($bechString);
+
+        if ($length < 8 || $length > 110) {
+            return null;
+        }
+
         $has_lower = false;
         $has_upper = false;
 
@@ -127,7 +138,7 @@ class Bech32
         $bechString = strtolower($bechString);
         $pos = strpos($bechString, 1);
 
-        if ($pos < 1 || ($pos + 7) > $length || $length > 110) {
+        if ($pos < 1 || ($pos + 7) > $length) {
             return null;
         }
 
@@ -144,7 +155,7 @@ class Bech32
             $data[] = $d;
         }
 
-        if (! $this->verifyChecksum($hrp, $data, $enc)) {
+        if (! $this->verifyChecksum($hrp, $data)) {
             return null;
         }
 

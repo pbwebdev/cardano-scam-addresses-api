@@ -7,6 +7,7 @@ use App\Http\Requests\WalletRequest;
 use App\Http\Resources\WalletCollection;
 use App\Http\Resources\WalletResource;
 use App\Models\Wallet;
+use App\Rules\Bech32Address;
 use App\Rules\CardanoAddress;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\JsonResponse;
@@ -52,8 +53,11 @@ class WalletController extends Controller
     public function store(WalletRequest $request): JsonResponse
     {
         $data = $request->validated();
+        $address = new CardanoAddress();
+        $validator = Validator::make($data, compact('address'));
+        $data = $validator->validated();
 
-        if (0 === strpos($data['address'], 'addr1')) {
+        if (! $address->isStake($data['address'])) {
             $data['address'] = $this->blockfrost->getStakeAddress($data['address']);
 
             if (! $data['address']) {
@@ -79,11 +83,11 @@ class WalletController extends Controller
      */
     public function show(string $key): JsonResponse
     {
-        $validator = Validator::make(['address' => $key], ['address' => new CardanoAddress()]);
-
+        $address = new CardanoAddress();
+        $validator = Validator::make(['address' => $key], ['address' => [new Bech32Address(), $address]]);
         $validated = $validator->validated();
 
-        if (0 === strpos($validated['address'], 'addr1')) {
+        if (! $address->isStake($validated['address'])) {
             $validated['address'] = $this->blockfrost->getStakeAddress($validated['address']);
         }
 
