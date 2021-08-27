@@ -32,10 +32,10 @@ class WalletResource extends JsonResource
         ];
 
         if ('show' === $method) {
-            $wallet = $request->route('wallet');
+            $address = $request->route('address');
 
-            if (0 === strpos($wallet, 'addr1')) {
-                $values['address'] = $request->route('wallet');
+            if (0 === strpos($address, 'addr1')) {
+                $values['address'] = $address;
             }
         } elseif ('store' === $method) {
             $values['address'] = $request->input('address');

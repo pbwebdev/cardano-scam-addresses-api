@@ -8,6 +8,7 @@ use App\Http\Resources\WalletCollection;
 use App\Http\Resources\WalletResource;
 use App\Models\Wallet;
 use App\Rules\CardanoAddress;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 
@@ -20,6 +21,7 @@ class WalletController extends Controller
 
     /**
      * Create a new Wallet controller instance
+     * @throws BindingResolutionException
      */
     public function __construct()
     {
@@ -97,17 +99,17 @@ class WalletController extends Controller
      * Update the specified resource in storage.
      *
      * @param  WalletRequest  $request
-     * @param  Wallet         $wallet
+     * @param  Wallet         $address
      *
      * @return JsonResponse
      */
-    public function update(WalletRequest $request, Wallet $wallet): JsonResponse
+    public function update(WalletRequest $request, Wallet $address): JsonResponse
     {
         $data = $request->validated();
 
-        $wallet->update($data);
+        $address->update($data);
 
-        $resource = new WalletResource($wallet);
+        $resource = new WalletResource($address);
 
         return $this->sendSuccess($resource);
     }
@@ -115,13 +117,13 @@ class WalletController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Wallet  $wallet
+     * @param  Wallet  $address
      *
      * @return JsonResponse
      */
-    public function destroy(Wallet $wallet): JsonResponse
+    public function destroy(Wallet $address): JsonResponse
     {
-        $wallet->delete();
+        $address->delete();
 
         return $this->index();
     }
