@@ -27,7 +27,7 @@ class WebsiteController extends Controller
     {
         $data = new WebsiteCollection(Website::all());
 
-        return $this->sendSuccess($data);
+        return $data->response();
     }
 
     /**
@@ -40,9 +40,12 @@ class WebsiteController extends Controller
     public function store(WebsiteRequest $request): JsonResponse
     {
         $data = $request->validated();
+
         $website = Website::create($data);
 
-        return $this->show($website->getAttributeValue('address'));
+        $resource = new WebsiteResource($website);
+
+        return $resource->response();
     }
 
     /**
@@ -54,15 +57,11 @@ class WebsiteController extends Controller
      */
     public function show(string $website): JsonResponse
     {
-        $data = Website::where('address', $website)->first();
+        $data = Website::where('address', $website)->firstOrFail();
 
-        if (is_null($data)) {
-            return $this->sendFail('Not found');
-        }
+        $resource = new WebsiteResource($data);
 
-        $data = new WebsiteResource($data);
-
-        return $this->sendSuccess($data);
+        return $resource->response();
     }
 
     /**
@@ -79,7 +78,9 @@ class WebsiteController extends Controller
 
         $website->update($data);
 
-        return $this->show($website->getAttributeValue('address'));
+        $resource = new WebsiteResource($website);
+
+        return $resource->response();
     }
 
     /**
@@ -93,6 +94,6 @@ class WebsiteController extends Controller
     {
         $website->delete();
 
-        return $this->index();
+        return new JsonResponse([], 204);
     }
 }

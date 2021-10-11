@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Traits\HasJsonResponse;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -59,7 +60,12 @@ class Handler extends ExceptionHandler
     {
         $response = parent::render($request, $e);
 
+        /** @noinspection NullPointerExceptionInspection */
         if ('api' === $request->route()->getPrefix()) {
+            if ($e instanceof ModelNotFoundException) {
+                $response->setData(['message' => 'Requested resource was not found.']);
+            }
+
             $response = new JsonResponse(
                 $response->getData(true),
                 $response->getStatusCode()

@@ -40,7 +40,7 @@ class WalletController extends Controller
     {
         $data = new WalletCollection(Wallet::all());
 
-        return $this->sendSuccess($data);
+        return $data->response();
     }
 
     /**
@@ -71,7 +71,7 @@ class WalletController extends Controller
 
         $resource = new WalletResource($wallet);
 
-        return $this->sendSuccess($resource);
+        return $resource->response();
     }
 
     /**
@@ -89,17 +89,16 @@ class WalletController extends Controller
 
         if (! $address->isStake($validated['address'])) {
             $validated['address'] = $this->blockfrost->getStakeAddress($validated['address']);
+
+            if (! $validated['address']) {
+                return $this->sendFail('Invalid address');
+            }
         }
 
-        $data = Wallet::where('address', $validated['address'])->first();
+        $data = Wallet::where('address', $validated['address'])->firstOrFail();
+        $resource = new WalletResource($data);
 
-        if (is_null($data)) {
-            return $this->sendFail('Not found');
-        }
-
-        $data = new WalletResource($data);
-
-        return $this->sendSuccess($data);
+        return $resource->response();
     }
 
     /**
@@ -118,7 +117,7 @@ class WalletController extends Controller
 
         $resource = new WalletResource($address);
 
-        return $this->sendSuccess($resource);
+        return $resource->response();
     }
 
     /**
@@ -132,6 +131,6 @@ class WalletController extends Controller
     {
         $address->delete();
 
-        return $this->index();
+        return new JsonResponse([], 204);
     }
 }
