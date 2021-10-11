@@ -2,16 +2,13 @@
 
 namespace App\Oauth2;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\JsonResponse;
-use JsonException;
+use Illuminate\Support\Facades\Http;
 
 class BlockfrostClient
 {
-    private $client;
-    private $project_id;
+    private $http;
 
     public const ENDPOINT = [
         'mainnet' => 'https://cardano-mainnet.blockfrost.io/api/v0/',
@@ -27,10 +24,7 @@ class BlockfrostClient
             $network = 'testnet';
         }
 
-        $this->client = new Client([
-            'base_uri' => self::ENDPOINT[$network],
-        ]);
-        $this->project_id = $project_id;
+        $this->http = Http::baseUrl(self::ENDPOINT[$network])->withHeaders(compact('project_id'));
     }
 
     /**
@@ -44,40 +38,18 @@ class BlockfrostClient
     public function request(string $endpoint, array $params = []): JsonResponse
     {
         try {
-            $options = array_merge(
-                [
-                    'headers' => [
-                        'project_id' => $this->project_id
-                    ],
-                    'query'   => $params,
-                ],
-            );
-            $response = $this->client->request('GET', $endpoint, $options);
+            $response = $this->http->get($endpoint, $params);
+
+            $response->throw();
 
             $value = [
-                'status_code' => $response->getStatusCode(),
-                'data'        => json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR),
+                'status_code' => $response->status(),
+                'data'        => $response->json(),
             ];
         } catch (RequestException $error) {
-            $response = $error->getResponse();
-
-            try {
-                $value = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
-            } catch (JsonException $e) {
-                $value = [
-                    'status_code' => 500,
-                    'error'       => $e->getMessage(),
-                ];
-            }
-        } catch (GuzzleException $e) {
             $value = [
-                'status_code' => 500,
-                'error'       => $e->getMessage(),
-            ];
-        } catch (JsonException $e) {
-            $value = [
-                'status_code' => 500,
-                'error'       => $e->getMessage(),
+                'status_code' => $error->getCode(),
+                'error'       => $error->getMessage(),
             ];
         } finally {
             return new JsonResponse($value['data'] ?? [], $value['status_code']);
