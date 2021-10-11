@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Traits\HasJsonResponse;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -58,10 +59,11 @@ class Handler extends ExceptionHandler
     {
         $response = parent::render($request, $e);
 
-        if ($request->expectsJson()) {
-            $data = $response->getData(true);
-
-            return $this->sendFail($data['message'], $response->getStatusCode(), $data['errors'] ?? []);
+        if ('api' === $request->route()->getPrefix()) {
+            $response = new JsonResponse(
+                $response->getData(true),
+                $response->getStatusCode()
+            );
         }
 
         return $response;
