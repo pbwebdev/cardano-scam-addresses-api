@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Blockfrost;
+use App\Exceptions\InvalidAddressException;
 use App\Http\Requests\WalletRequest;
 use App\Http\Resources\WalletCollection;
 use App\Http\Resources\WalletResource;
@@ -19,6 +20,10 @@ class WalletController extends Controller
      * @var Blockfrost
      */
     private $blockfrost;
+    /**
+     * @var CardanoAddress
+     */
+    private $cardanoAddress;
 
     /**
      * Create a new Wallet controller instance
@@ -29,6 +34,7 @@ class WalletController extends Controller
         $this->middleware('can:administrate')->only(['update', 'destroy']);
 
         $this->blockfrost = app()->make(Blockfrost::class);
+        $this->cardanoAddress = new CardanoAddress();
     }
 
     /**
@@ -52,20 +58,10 @@ class WalletController extends Controller
      */
     public function store(WalletRequest $request): JsonResponse
     {
-        $data = $request->validated();
-        $address = new CardanoAddress();
-        $validator = Validator::make($data, compact('address'));
+        $validator = Validator::make($request->validated(), ['address' => $this->cardanoAddress]);
         $data = $validator->validated();
 
-        if (! $address->isStake($data['address'])) {
-            $data['address'] = $this->blockfrost->getStakeAddress($data['address']);
-
-            if (! $data['address']) {
-                return $this->sendFail('Invalid address');
-            }
-        }
-
-        $validator = Validator::make($data, $request->rules());
+        $this->maybeInvalidAddress($data['address']);
 
         $wallet = Wallet::create($validator->validated());
 
@@ -83,20 +79,14 @@ class WalletController extends Controller
      */
     public function show(string $key): JsonResponse
     {
-        $address = new CardanoAddress();
-        $validator = Validator::make(['address' => $key], ['address' => [new Bech32Address(), $address]]);
-        $validated = $validator->validated();
+        $validator = Validator::make(['address' => $key], ['address' => [new Bech32Address(), $this->cardanoAddress]]);
+        $data = $validator->validated();
 
-        if (! $address->isStake($validated['address'])) {
-            $validated['address'] = $this->blockfrost->getStakeAddress($validated['address']);
+        $this->maybeInvalidAddress($data['address']);
 
-            if (! $validated['address']) {
-                return $this->sendFail('Invalid address');
-            }
-        }
+        $wallet = Wallet::where('address', $data['address'])->firstOrFail();
 
-        $data = Wallet::where('address', $validated['address'])->firstOrFail();
-        $resource = new WalletResource($data);
+        $resource = new WalletResource($wallet);
 
         return $resource->response();
     }
@@ -132,5 +122,20 @@ class WalletController extends Controller
         $address->delete();
 
         return new JsonResponse([], 204);
+    }
+
+
+    /**
+     * @throws InvalidAddressException
+     */
+    protected function maybeInvalidAddress(string &$data): void
+    {
+        if (! $this->cardanoAddress->isStake($data)) {
+            $data = $this->blockfrost->getStakeAddress($data);
+
+            if (! $data) {
+                throw new InvalidAddressException();
+            }
+        }
     }
 }

@@ -64,6 +64,8 @@ class Handler extends ExceptionHandler
         if ('api' === $request->route()->getPrefix()) {
             if ($e instanceof ModelNotFoundException) {
                 $response->setData(['message' => 'Requested resource was not found.']);
+            } elseif ($e instanceof InvalidAddressException) {
+                $response->setData(['message' => 'Requested address was not valid to the network.']);
             }
 
             $response = new JsonResponse(
