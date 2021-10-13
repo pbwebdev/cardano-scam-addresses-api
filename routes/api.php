@@ -20,10 +20,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware(['auth:sanctum'])->apiResource('addresses', WalletController::class)
+Route::middleware(['auth:sanctum', 'permission:write_wallet'])->apiResource('addresses', WalletController::class)
     ->except(['index', 'show']);
 Route::apiResource('addresses', WalletController::class)->only(['index', 'show']);
 
-Route::middleware(['auth:sanctum'])->apiResource('websites', WebsiteController::class)
+Route::middleware(['auth:sanctum', 'permission:write_website'])->apiResource('websites', WebsiteController::class)
     ->except(['index', 'show']);
 Route::apiResource('websites', WebsiteController::class)->only(['index', 'show']);

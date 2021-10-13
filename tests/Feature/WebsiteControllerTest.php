@@ -8,18 +8,18 @@ use App\Models\User;
 use App\Models\Website;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
-use Laravel\Passport\Passport;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class WebsiteControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function authenticatedUser(bool $is_admin = false, bool $incorrect_scope = false): void
+    protected function authenticatedUser(bool $is_admin = false, bool $incorrect_permission = false): void
     {
-        Passport::actingAs(
+        Sanctum::actingAs(
             User::factory(compact('is_admin'))->create(),
-            $incorrect_scope ? [] : ['write_website']
+            $incorrect_permission ? [] : ['write_website']
         );
     }
 
@@ -114,7 +114,7 @@ class WebsiteControllerTest extends TestCase
         $response->assertUnauthorized();
     }
 
-    public function test_endpoints_need_correct_scope(): void
+    public function test_endpoints_need_correct_permission(): void
     {
         $resource = Website::create(['address' => 'created.com']);
         $payload = ['address' => 'test.com'];

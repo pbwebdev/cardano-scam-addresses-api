@@ -25,21 +25,21 @@ class ApiTokenPermissionsTest extends TestCase
         }
 
         $token = $user->tokens()->create([
-            'name' => 'Test Token',
-            'token' => Str::random(40),
-            'abilities' => ['create', 'read'],
+            'name'      => 'Test Token',
+            'token'     => Str::random(40),
+            'abilities' => ['write_wallet', 'write_website'],
         ]);
 
-        $response = $this->put('/user/api-tokens/'.$token->id, [
-            'name' => $token->name,
+        $response = $this->put('/user/api-tokens/' . $token->id, [
+            'name'        => $token->name,
             'permissions' => [
-                'delete',
+                'write_wallet',
                 'missing-permission',
             ],
         ]);
 
-        $this->assertTrue($user->fresh()->tokens->first()->can('delete'));
-        $this->assertFalse($user->fresh()->tokens->first()->can('read'));
+        $this->assertTrue($user->fresh()->tokens->first()->can('write_wallet'));
+        $this->assertFalse($user->fresh()->tokens->first()->can('write_website'));
         $this->assertFalse($user->fresh()->tokens->first()->can('missing-permission'));
     }
 }

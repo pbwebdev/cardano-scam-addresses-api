@@ -24,16 +24,18 @@ class CreateApiTokenTest extends TestCase
         }
 
         $response = $this->post('/user/api-tokens', [
-            'name' => 'Test Token',
+            'name'        => 'Test Token',
             'permissions' => [
-                'read',
-                'update',
+                'write_wallet',
+                'write_website',
             ],
         ]);
 
         $this->assertCount(1, $user->fresh()->tokens);
         $this->assertEquals('Test Token', $user->fresh()->tokens->first()->name);
-        $this->assertTrue($user->fresh()->tokens->first()->can('read'));
+        $this->assertTrue($user->fresh()->tokens->first()->can('write_wallet'));
+        $this->assertTrue($user->fresh()->tokens->first()->can('write_website'));
+        $this->assertFalse($user->fresh()->tokens->first()->can('update'));
         $this->assertFalse($user->fresh()->tokens->first()->can('delete'));
     }
 }
