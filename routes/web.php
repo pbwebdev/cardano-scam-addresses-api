@@ -24,8 +24,6 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
-
-require __DIR__.'/auth.php';

@@ -27,8 +27,7 @@ use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Jetstream\Http\Middleware\AuthenticateSession;
-use Laravel\Passport\Http\Middleware\CheckForAnyScope;
-use Laravel\Passport\Http\Middleware\CheckScopes;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 class Kernel extends HttpKernel
 {
@@ -67,6 +66,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
+            EnsureFrontendRequestsAreStateful::class,
             JsonResponseMiddleware::class,
             'throttle:api',
             SubstituteBindings::class,
@@ -90,7 +90,5 @@ class Kernel extends HttpKernel
         'signed'           => ValidateSignature::class,
         'throttle'         => ThrottleRequests::class,
         'verified'         => EnsureEmailIsVerified::class,
-        'scopes'           => CheckScopes::class,
-        'scope'            => CheckForAnyScope::class,
     ];
 }
