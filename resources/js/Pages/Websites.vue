@@ -9,11 +9,20 @@
                 </div>
 
                 <div class="w-full sm:max-w-2xl mt-6 p-6 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                    <h1 class="font-semibold text-2xl text-gray-800 leading-tight">
-                        Websites
-                    </h1>
+                    <div class="flex justify-between">
+                        <h1 class="font-semibold text-2xl text-gray-800 leading-tight">
+                            Websites
+                        </h1>
 
-                    <div v-if="websites.length > 0" class="mt-4 overflow-x-auto">
+                        <jet-button
+                            @click="createWebsite.modal = true"
+                            v-if="isAdmin" :class="{ 'opacity-25': createWebsite.processing }"
+                            :disabled="createWebsite.processing">
+                            Add
+                        </jet-button>
+                    </div>
+
+                    <div v-if="websites.length > 0" class="mt-4 pt-4 border-t border-gray-200 overflow-x-auto">
                         <ul class="list-decimal ml-8">
                             <li v-for="data in websites" :key="data.id">{{ data.address }}</li>
                         </ul>
@@ -22,23 +31,66 @@
             </div>
         </div>
     </div>
+
+    <jet-dialog-modal :show="createWebsite.modal" @close="createWebsite.modal = false">
+        <template #title>
+            Add New Address
+        </template>
+
+        <template #content>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <jet-label for="address" value="Shelly Address" />
+                <jet-input id="address" type="text" class="mt-1 block w-full" v-model="createWebsite.address"
+                           required autofocus />
+            </div>
+        </template>
+
+        <template #footer>
+            <jet-secondary-button @click="createWebsite.modal = false">
+                Cancel
+            </jet-secondary-button>
+
+            <jet-button class="ml-2" @click="createWebsiteAction"
+                        :class="{ 'opacity-25': createWebsite.processing }"
+                        :disabled="createWebsite.processing">
+                Save
+            </jet-button>
+        </template>
+    </jet-dialog-modal>
 </template>
 
 <script>
     import { defineComponent } from 'vue'
     import { Head, Link } from '@inertiajs/inertia-vue3';
     import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo.vue'
+    import JetDialogModal from '@/Jetstream/DialogModal.vue'
+    import JetButton from '@/Jetstream/Button.vue'
+    import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue'
+    import JetInput from '@/Jetstream/Input.vue'
+    import JetLabel from '@/Jetstream/Label.vue'
 
     export default defineComponent({
         components: {
             Head,
             Link,
             JetAuthenticationCardLogo,
+            JetDialogModal,
+            JetButton,
+            JetSecondaryButton,
+            JetInput,
+            JetLabel,
         },
+
+        props: ['isAdmin'],
 
         data() {
             return {
                 websites: [],
+                createWebsite: {
+                    modal: false,
+                    address: null,
+                    processing: false,
+                },
             }
         },
 
@@ -48,6 +100,32 @@
             response.then(data => {
                 this.websites = data?.data?.data || [];
             });
+        },
+
+        methods: {
+            createWebsiteAction() {
+                this.createWebsite.processing = true;
+
+                const response = axios.post(route('websites.store'), {
+                    address: this.createWebsite.address,
+                });
+
+                response.then(data => {
+                    this.createWebsite = {
+                        modal: false,
+                        address: null,
+                        processing: false,
+                    }
+
+                    const website = data?.data?.data ?? false;
+
+                    if (website) {
+                        this.websites.push(website);
+                    }
+
+                    return data;
+                });
+            }
         }
     })
 </script>
