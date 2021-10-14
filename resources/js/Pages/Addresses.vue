@@ -81,6 +81,11 @@
         </template>
 
         <template #footer>
+            <jet-danger-button class="mr-2" @click="removeAddressAction"
+                               :class="{ 'opacity-25': editAddress.processing }" :disabled="editAddress.processing">
+                Delete
+            </jet-danger-button>
+
             <jet-secondary-button @click="editAddress.modal = false">
                 Cancel
             </jet-secondary-button>
@@ -101,6 +106,7 @@
     import JetDialogModal from '@/Jetstream/DialogModal.vue'
     import JetButton from '@/Jetstream/Button.vue'
     import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue'
+    import JetDangerButton from '@/Jetstream/DangerButton.vue'
     import JetInput from '@/Jetstream/Input.vue'
     import JetLabel from '@/Jetstream/Label.vue'
 
@@ -112,6 +118,7 @@
             JetDialogModal,
             JetButton,
             JetSecondaryButton,
+            JetDangerButton,
             JetInput,
             JetLabel,
         },
@@ -199,6 +206,27 @@
 
                         this.addresses[index] = address;
                     }
+
+                    return data;
+                });
+            },
+
+            removeAddressAction() {
+                this.editAddress.processing = true;
+
+                const response = axios.delete(route('addresses.destroy', this.editAddress.id));
+
+                response.then(data => {
+                    const index = this.addresses.findIndex(object => object.id === this.editAddress.id);
+
+                    this.editAddress = {
+                        id: null,
+                        modal: false,
+                        address: null,
+                        processing: false,
+                    }
+
+                    this.addresses.splice(index, 1);
 
                     return data;
                 });

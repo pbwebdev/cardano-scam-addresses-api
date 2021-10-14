@@ -81,6 +81,11 @@
         </template>
 
         <template #footer>
+            <jet-danger-button class="mr-2" @click="removeWebsiteAction"
+                               :class="{ 'opacity-25': editWebsite.processing }" :disabled="editWebsite.processing">
+                Delete
+            </jet-danger-button>
+
             <jet-secondary-button @click="editWebsite.modal = false">
                 Cancel
             </jet-secondary-button>
@@ -101,6 +106,7 @@
     import JetDialogModal from '@/Jetstream/DialogModal.vue'
     import JetButton from '@/Jetstream/Button.vue'
     import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue'
+    import JetDangerButton from '@/Jetstream/DangerButton.vue'
     import JetInput from '@/Jetstream/Input.vue'
     import JetLabel from '@/Jetstream/Label.vue'
 
@@ -112,6 +118,7 @@
             JetDialogModal,
             JetButton,
             JetSecondaryButton,
+            JetDangerButton,
             JetInput,
             JetLabel,
         },
@@ -199,6 +206,27 @@
 
                         this.websites[index] = website;
                     }
+
+                    return data;
+                });
+            },
+
+            removeWebsiteAction() {
+                this.editWebsite.processing = true;
+
+                const response = axios.delete(route('websites.destroy', this.editWebsite.id));
+
+                response.then(data => {
+                    const index = this.websites.findIndex(object => object.id === this.editWebsite.id);
+
+                    this.editWebsite = {
+                        id: null,
+                        modal: false,
+                        address: null,
+                        processing: false,
+                    }
+
+                    this.websites.splice(index, 1);
 
                     return data;
                 });
