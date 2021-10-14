@@ -63,6 +63,8 @@ class WalletController extends Controller
 
         $this->maybeInvalidAddress($data['address']);
 
+        $validator = Validator::make($data, $request->rules());
+
         $wallet = Wallet::create($validator->validated());
 
         $resource = new WalletResource($wallet);
