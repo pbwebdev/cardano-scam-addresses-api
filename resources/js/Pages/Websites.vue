@@ -9,7 +9,7 @@
                 </div>
 
                 <div class="w-full sm:max-w-2xl mt-6 p-6 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                    <div class="flex justify-between">
+                    <div class="flex justify-between items-center">
                         <h1 class="font-semibold text-2xl text-gray-800 leading-tight">
                             Websites
                         </h1>
@@ -23,7 +23,7 @@
                     </div>
 
                     <div v-if="websites.length > 0" class="mt-4 pt-4 border-t border-gray-200 overflow-x-auto">
-                        <ul class="list-decimal ml-8">
+                        <ul class="list-decimal ml-10">
                             <li v-for="data in websites" :key="data.id">
                                 <a href="#"
                                    class="text-[#6875F5]"
@@ -43,58 +43,56 @@
 
     <jet-dialog-modal :show="createWebsite.modal" @close="createWebsite.modal = false">
         <template #title>
-            Add New Address
+            Add New Website
         </template>
 
         <template #content>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <jet-label for="address" value="Shelly Address" />
-                <jet-input id="address" type="text" class="mt-1 block w-full" v-model="createWebsite.address"
-                           required autofocus />
-            </div>
+            <jet-input type="text" class="w-full" v-model="createWebsite.address"
+                       required autofocus />
         </template>
 
         <template #footer>
-            <jet-secondary-button @click="createWebsite.modal = false">
-                Cancel
-            </jet-secondary-button>
+            <div class="space-x-2 space-y-2">
+                <jet-secondary-button @click="createWebsite.modal = false">
+                    Cancel
+                </jet-secondary-button>
 
-            <jet-button class="ml-2" @click="createWebsiteAction"
-                        :class="{ 'opacity-25': createWebsite.processing }"
-                        :disabled="createWebsite.processing">
-                Save
-            </jet-button>
+                <jet-button @click="createWebsiteAction"
+                            :class="{ 'opacity-25': createWebsite.processing }"
+                            :disabled="createWebsite.processing">
+                    Save
+                </jet-button>
+            </div>
         </template>
     </jet-dialog-modal>
 
     <jet-dialog-modal :show="editWebsite.modal" @close="editWebsite.modal = false">
         <template #title>
-            Edit Address
+            Edit Website
         </template>
 
         <template #content>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <jet-label for="edit_address" value="Shelly Address" />
-                <jet-input id="edit_address" type="text" class="mt-1 block w-full" v-model="editWebsite.address"
-                           required autofocus />
-            </div>
+            <jet-input type="text" class="w-full" v-model="editWebsite.address"
+                       required autofocus />
         </template>
 
         <template #footer>
-            <jet-danger-button class="mr-2" @click="removeWebsiteAction"
-                               :class="{ 'opacity-25': editWebsite.processing }" :disabled="editWebsite.processing">
-                Delete
-            </jet-danger-button>
+            <div class="space-x-2 space-y-2">
+                <jet-danger-button @click="removeWebsiteAction"
+                                   :class="{ 'opacity-25': editWebsite.processing }" :disabled="editWebsite.processing">
+                    Delete
+                </jet-danger-button>
 
-            <jet-secondary-button @click="editWebsite.modal = false">
-                Cancel
-            </jet-secondary-button>
+                <jet-secondary-button @click="editWebsite.modal = false">
+                    Cancel
+                </jet-secondary-button>
 
-            <jet-button class="ml-2" @click="editWebsiteAction"
-                        :class="{ 'opacity-25': editWebsite.processing }"
-                        :disabled="editWebsite.processing">
-                Update
-            </jet-button>
+                <jet-button @click="editWebsiteAction"
+                            :class="{ 'opacity-25': editWebsite.processing }"
+                            :disabled="editWebsite.processing">
+                    Update
+                </jet-button>
+            </div>
         </template>
     </jet-dialog-modal>
 </template>
