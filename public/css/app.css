@@ -1885,6 +1885,10 @@ select {
 	--tw-text-opacity: 1;
 	color: rgba(209, 213, 219, var(--tw-text-opacity));
 }
+.text-\[\#6875F5\] {
+	--tw-text-opacity: 1;
+	color: rgba(104, 117, 245, var(--tw-text-opacity));
+}
 .underline {
 	text-decoration: underline;
 }

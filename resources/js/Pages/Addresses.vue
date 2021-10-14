@@ -24,7 +24,16 @@
 
                     <div v-if="addresses.length > 0" class="mt-4 pt-4 border-t border-gray-200 overflow-x-auto">
                         <ul class="list-decimal ml-8">
-                            <li v-for="data in addresses" :key="data.id">{{ data.address }}</li>
+                            <li v-for="data in addresses" :key="data.id">
+                                <a href="#"
+                                   class="text-[#6875F5]"
+                                   @click="manageAddressAction(data.id)"
+                                   v-if="isAdmin"
+                                >
+                                    {{ data.address }}
+                                </a>
+                                <span v-else>{{ data.address }}</span>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -54,6 +63,32 @@
                         :class="{ 'opacity-25': createAddress.processing }"
                         :disabled="createAddress.processing">
                 Save
+            </jet-button>
+        </template>
+    </jet-dialog-modal>
+
+    <jet-dialog-modal :show="editAddress.modal" @close="editAddress.modal = false">
+        <template #title>
+            Edit Address
+        </template>
+
+        <template #content>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <jet-label for="edit_address" value="Shelly Address" />
+                <jet-input id="edit_address" type="text" class="mt-1 block w-full" v-model="editAddress.address"
+                           required autofocus />
+            </div>
+        </template>
+
+        <template #footer>
+            <jet-secondary-button @click="editAddress.modal = false">
+                Cancel
+            </jet-secondary-button>
+
+            <jet-button class="ml-2" @click="editAddressAction"
+                        :class="{ 'opacity-25': editAddress.processing }"
+                        :disabled="editAddress.processing">
+                Update
             </jet-button>
         </template>
     </jet-dialog-modal>
@@ -91,6 +126,12 @@
                     address: null,
                     processing: false,
                 },
+                editAddress: {
+                    id: null,
+                    modal: false,
+                    address: null,
+                    processing: false,
+                },
             }
         },
 
@@ -121,6 +162,42 @@
 
                     if (address) {
                         this.addresses.push(address);
+                    }
+
+                    return data;
+                });
+            },
+
+            manageAddressAction(id) {
+                this.editAddress.id = id;
+                this.editAddress.modal = true;
+
+                const index = this.addresses.findIndex(object => object.id === id);
+
+                this.editAddress.address = this.addresses[index].address;
+            },
+
+            editAddressAction() {
+                this.editAddress.processing = true;
+
+                const response = axios.patch(route('addresses.update', this.editAddress.id), {
+                    address: this.editAddress.address,
+                });
+
+                response.then(data => {
+                    this.editAddress = {
+                        id: null,
+                        modal: false,
+                        address: null,
+                        processing: false,
+                    }
+
+                    const address = data?.data?.data ?? false;
+
+                    if (address) {
+                        const index = this.addresses.findIndex(object => object.id === address.id);
+
+                        this.addresses[index] = address;
                     }
 
                     return data;
