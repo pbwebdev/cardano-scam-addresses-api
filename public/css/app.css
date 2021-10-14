@@ -1226,6 +1226,9 @@ select {
 .-mt-px {
 	margin-top: -1px;
 }
+.ml-8 {
+	margin-left: 2rem;
+}
 .block {
 	display: block;
 }
@@ -1397,6 +1400,9 @@ select {
 .list-disc {
 	list-style-type: disc;
 }
+.list-decimal {
+	list-style-type: decimal;
+}
 .grid-cols-6 {
 	grid-template-columns: repeat(6, minmax(0, 1fr));
 }
@@ -1447,6 +1453,9 @@ select {
 }
 .overflow-hidden {
 	overflow: hidden;
+}
+.overflow-x-auto {
+	overflow-x: auto;
 }
 .overflow-y-auto {
 	overflow-y: auto;
@@ -2200,10 +2209,6 @@ select {
 		margin-left: 1.5rem;
 	}
 
-	.sm\:ml-0 {
-		margin-left: 0px;
-	}
-
 	.sm\:block {
 		display: block;
 	}
@@ -2218,10 +2223,6 @@ select {
 
 	.sm\:h-10 {
 		height: 2.5rem;
-	}
-
-	.sm\:h-20 {
-		height: 5rem;
 	}
 
 	.sm\:w-10 {
@@ -2346,10 +2347,6 @@ select {
 
 	.sm\:text-left {
 		text-align: left;
-	}
-
-	.sm\:text-right {
-		text-align: right;
 	}
 }
 @media (min-width: 768px) {
