@@ -20890,7 +20890,7 @@ __webpack_require__.r(__webpack_exports__);
         var _data$data, _data$data2;
 
         _this.addresses = (data === null || data === void 0 ? void 0 : (_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data.data) || [];
-        _this.pages = (data === null || data === void 0 ? void 0 : (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.meta.links) || [];
+        _this.pages = (data === null || data === void 0 ? void 0 : (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.pagination) || [];
       });
     },
     createAddressAction: function createAddressAction() {
@@ -22056,7 +22056,7 @@ __webpack_require__.r(__webpack_exports__);
         var _data$data, _data$data2;
 
         _this.websites = (data === null || data === void 0 ? void 0 : (_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data.data) || [];
-        _this.pages = (data === null || data === void 0 ? void 0 : (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.meta.links) || [];
+        _this.pages = (data === null || data === void 0 ? void 0 : (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.pagination) || [];
       });
     },
     createWebsiteAction: function createWebsiteAction() {

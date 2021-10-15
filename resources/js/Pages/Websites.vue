@@ -160,7 +160,7 @@
 
                 response.then(data => {
                     this.websites = data?.data?.data || [];
-                    this.pages = data?.data?.meta.links || [];
+                    this.pages = data?.data?.pagination || [];
                 });
             },
 

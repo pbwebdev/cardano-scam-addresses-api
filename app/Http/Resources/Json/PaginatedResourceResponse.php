@@ -2,11 +2,33 @@
 
 namespace App\Http\Resources\Json;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\PaginatedResourceResponse as BaseResponse;
-use Illuminate\Support\Arr;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 class PaginatedResourceResponse extends BaseResponse
 {
+    /**
+     * Add the pagination information to the response.
+     *
+     * @param  Request  $request
+     *
+     * @return array
+     */
+    protected function paginationInformation($request): array
+    {
+        $paginated = $this->resource->resource->toArray();
+
+        if (EnsureFrontendRequestsAreStateful::fromFrontend($request)) {
+            return ['pagination' => $paginated['links']];
+        }
+
+        return [
+            'links' => $this->paginationLinks($paginated),
+            'meta'  => $this->meta($paginated),
+        ];
+    }
+
     /**
      * Get the pagination links for the response.
      *
@@ -33,13 +55,14 @@ class PaginatedResourceResponse extends BaseResponse
      */
     protected function meta($paginated): array
     {
-        return Arr::except($paginated, [
-            'data',
-            'links',
-            'first_page_url',
-            'last_page_url',
-            'prev_page_url',
-            'next_page_url',
-        ]);
+        $keys = array_fill_keys([
+            'path',
+            'current_page',
+            'last_page',
+            'per_page',
+            'total',
+        ], '');
+
+        return array_replace($keys, array_intersect_key($paginated, $keys));
     }
 }
