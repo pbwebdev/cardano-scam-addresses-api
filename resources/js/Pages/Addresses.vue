@@ -138,7 +138,9 @@
         },
 
         mounted() {
-            this.loadAddresses(route('addresses.index'));
+            this.loadAddresses(route('addresses.index', {
+                page: new URLSearchParams(window.location.search).get('page')
+            }));
         },
 
         methods: {

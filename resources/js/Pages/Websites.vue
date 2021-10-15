@@ -138,7 +138,9 @@
         },
 
         mounted() {
-            this.loadWebsites(route('websites.index'));
+            this.loadWebsites(route('websites.index', {
+                page: new URLSearchParams(window.location.search).get('page')
+            }));
         },
 
         methods: {

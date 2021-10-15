@@ -20868,7 +20868,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.loadAddresses(route('addresses.index'));
+    this.loadAddresses(route('addresses.index', {
+      page: new URLSearchParams(window.location.search).get('page')
+    }));
   },
   methods: {
     correctLink: function correctLink(url) {
@@ -22032,7 +22034,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.loadWebsites(route('websites.index'));
+    this.loadWebsites(route('websites.index', {
+      page: new URLSearchParams(window.location.search).get('page')
+    }));
   },
   methods: {
     correctLink: function correctLink(url) {
