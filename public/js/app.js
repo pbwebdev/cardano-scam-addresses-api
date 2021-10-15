@@ -20868,15 +20868,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    var _this = this;
-
-    var response = axios.get(route('addresses.index'));
-    response.then(function (data) {
-      var _data$data, _data$data2;
-
-      _this.addresses = (data === null || data === void 0 ? void 0 : (_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data.data) || [];
-      _this.pages = (data === null || data === void 0 ? void 0 : (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.meta.links) || [];
-    });
+    this.loadAddresses(route('addresses.index'));
   },
   methods: {
     correctLink: function correctLink(url) {
@@ -20887,6 +20879,17 @@ __webpack_require__.r(__webpack_exports__);
       this.modalActive = false;
       this.fieldValue = null;
       this.formProcessing = false;
+    },
+    loadAddresses: function loadAddresses(url) {
+      var _this = this;
+
+      var response = axios.get(url);
+      response.then(function (data) {
+        var _data$data, _data$data2;
+
+        _this.addresses = (data === null || data === void 0 ? void 0 : (_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data.data) || [];
+        _this.pages = (data === null || data === void 0 ? void 0 : (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.meta.links) || [];
+      });
     },
     createAddressAction: function createAddressAction() {
       var _this2 = this;
@@ -22029,15 +22032,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    var _this = this;
-
-    var response = axios.get(route('websites.index'));
-    response.then(function (data) {
-      var _data$data, _data$data2;
-
-      _this.websites = (data === null || data === void 0 ? void 0 : (_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data.data) || [];
-      _this.pages = (data === null || data === void 0 ? void 0 : (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.meta.links) || [];
-    });
+    this.loadWebsites(route('websites.index'));
   },
   methods: {
     correctLink: function correctLink(url) {
@@ -22048,6 +22043,17 @@ __webpack_require__.r(__webpack_exports__);
       this.modalActive = false;
       this.fieldValue = null;
       this.formProcessing = false;
+    },
+    loadWebsites: function loadWebsites(url) {
+      var _this = this;
+
+      var response = axios.get(url);
+      response.then(function (data) {
+        var _data$data, _data$data2;
+
+        _this.websites = (data === null || data === void 0 ? void 0 : (_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data.data) || [];
+        _this.pages = (data === null || data === void 0 ? void 0 : (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.meta.links) || [];
+      });
     },
     createWebsiteAction: function createWebsiteAction() {
       var _this2 = this;
@@ -24477,7 +24483,7 @@ var _hoisted_12 = {
 var _hoisted_13 = {
   "class": "flex flex-wrap"
 };
-var _hoisted_14 = ["href", "innerHTML"];
+var _hoisted_14 = ["href", "onClick", "innerHTML"];
 var _hoisted_15 = {
   "class": "space-x-2 space-y-2"
 };
@@ -24542,7 +24548,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     ))]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _ctx.pages.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("nav", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_13, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.pages, function (page) {
+  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _ctx.pages.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("nav", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ol", _hoisted_13, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.pages, function (page) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
       key: page.label,
       "class": "p-4"
@@ -24552,6 +24558,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         'pointer-events-none': !page.url || page.active,
         'opacity-80': !page.url || page.active
       }]),
+      onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+        return _ctx.loadAddresses(page.url);
+      }, ["prevent"]),
       innerHTML: page.label
     }, null, 10
     /* CLASS, PROPS */
@@ -26823,7 +26832,7 @@ var _hoisted_12 = {
 var _hoisted_13 = {
   "class": "flex flex-wrap"
 };
-var _hoisted_14 = ["href", "innerHTML"];
+var _hoisted_14 = ["href", "onClick", "innerHTML"];
 var _hoisted_15 = {
   "class": "space-x-2 space-y-2"
 };
@@ -26888,7 +26897,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     ))]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _ctx.pages.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("nav", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_13, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.pages, function (page) {
+  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _ctx.pages.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("nav", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ol", _hoisted_13, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.pages, function (page) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
       key: page.label,
       "class": "p-4"
@@ -26898,6 +26907,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         'pointer-events-none': !page.url || page.active,
         'opacity-80': !page.url || page.active
       }]),
+      onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+        return _ctx.loadWebsites(page.url);
+      }, ["prevent"]),
       innerHTML: page.label
     }, null, 10
     /* CLASS, PROPS */

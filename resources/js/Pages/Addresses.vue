@@ -39,7 +39,7 @@
                 </div>
 
                 <nav v-if="pages.length > 0" class="mt-6">
-                    <ul class="flex flex-wrap">
+                    <ol class="flex flex-wrap">
                         <li v-for="page in pages" :key="page.label" class="p-4">
                             <a :href="correctLink(page.url)"
                                class="text-[#6875F5]"
@@ -47,10 +47,11 @@
                                     'pointer-events-none': !page.url || page.active,
                                     'opacity-80': !page.url || page.active
                                 }"
+                               v-on:click.prevent="loadAddresses(page.url)"
                                v-html="page.label"
                             ></a>
                         </li>
-                    </ul>
+                    </ol>
                 </nav>
             </div>
         </div>
@@ -137,12 +138,7 @@
         },
 
         mounted() {
-            const response = axios.get(route('addresses.index'));
-
-            response.then(data => {
-                this.addresses = data?.data?.data || [];
-                this.pages = data?.data?.meta.links || [];
-            });
+            this.loadAddresses(route('addresses.index'));
         },
 
         methods: {
@@ -155,6 +151,15 @@
                 this.modalActive = false;
                 this.fieldValue = null;
                 this.formProcessing = false;
+            },
+
+            loadAddresses(url) {
+                const response = axios.get(url);
+
+                response.then(data => {
+                    this.addresses = data?.data?.data || [];
+                    this.pages = data?.data?.meta.links || [];
+                });
             },
 
             createAddressAction() {
