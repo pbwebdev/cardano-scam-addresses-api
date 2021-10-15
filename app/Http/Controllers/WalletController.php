@@ -44,7 +44,7 @@ class WalletController extends Controller
      */
     public function index(): JsonResponse
     {
-        $data = new WalletCollection(Wallet::all());
+        $data = new WalletCollection(Wallet::paginate(10));
 
         return $data->response();
     }

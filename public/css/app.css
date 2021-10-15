@@ -1096,6 +1096,9 @@ select {
 .prose > :last-child {
 	margin-bottom: 0;
 }
+.pointer-events-none {
+	pointer-events: none;
+}
 .fixed {
 	position: fixed;
 }
@@ -1932,6 +1935,9 @@ select {
 }
 .opacity-25 {
 	opacity: 0.25;
+}
+.opacity-80 {
+	opacity: 0.8;
 }
 .shadow-sm {
 	--tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);

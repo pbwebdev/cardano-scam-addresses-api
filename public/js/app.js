@@ -20855,6 +20855,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       addresses: [],
+      pages: [],
       managedId: null,
       modalActive: false,
       fieldValue: null,
@@ -20871,12 +20872,16 @@ __webpack_require__.r(__webpack_exports__);
 
     var response = axios.get(route('addresses.index'));
     response.then(function (data) {
-      var _data$data;
+      var _data$data, _data$data2;
 
       _this.addresses = (data === null || data === void 0 ? void 0 : (_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data.data) || [];
+      _this.pages = (data === null || data === void 0 ? void 0 : (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.meta.links) || [];
     });
   },
   methods: {
+    correctLink: function correctLink(url) {
+      return url ? url.replace('/api', '') : "#";
+    },
     resetData: function resetData() {
       this.managedId = null;
       this.modalActive = false;
@@ -20891,11 +20896,11 @@ __webpack_require__.r(__webpack_exports__);
         address: this.fieldValue
       });
       response.then(function (data) {
-        var _data$data$data, _data$data2;
+        var _data$data$data, _data$data3;
 
         _this2.resetData();
 
-        var address = (_data$data$data = data === null || data === void 0 ? void 0 : (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.data) !== null && _data$data$data !== void 0 ? _data$data$data : false;
+        var address = (_data$data$data = data === null || data === void 0 ? void 0 : (_data$data3 = data.data) === null || _data$data3 === void 0 ? void 0 : _data$data3.data) !== null && _data$data$data !== void 0 ? _data$data$data : false;
 
         if (address) {
           _this2.addresses.push(address);
@@ -20926,11 +20931,11 @@ __webpack_require__.r(__webpack_exports__);
         address: this.fieldValue
       });
       response.then(function (data) {
-        var _data$data$data2, _data$data3;
+        var _data$data$data2, _data$data4;
 
         _this3.resetData();
 
-        var address = (_data$data$data2 = data === null || data === void 0 ? void 0 : (_data$data3 = data.data) === null || _data$data3 === void 0 ? void 0 : _data$data3.data) !== null && _data$data$data2 !== void 0 ? _data$data$data2 : false;
+        var address = (_data$data$data2 = data === null || data === void 0 ? void 0 : (_data$data4 = data.data) === null || _data$data4 === void 0 ? void 0 : _data$data4.data) !== null && _data$data$data2 !== void 0 ? _data$data$data2 : false;
 
         if (address) {
           var index = _this3.addresses.findIndex(function (object) {
@@ -22011,6 +22016,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       websites: [],
+      pages: [],
       managedId: null,
       modalActive: false,
       fieldValue: null,
@@ -22027,12 +22033,16 @@ __webpack_require__.r(__webpack_exports__);
 
     var response = axios.get(route('websites.index'));
     response.then(function (data) {
-      var _data$data;
+      var _data$data, _data$data2;
 
       _this.websites = (data === null || data === void 0 ? void 0 : (_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data.data) || [];
+      _this.pages = (data === null || data === void 0 ? void 0 : (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.meta.links) || [];
     });
   },
   methods: {
+    correctLink: function correctLink(url) {
+      return url ? url.replace('/api', '') : "#";
+    },
     resetData: function resetData() {
       this.managedId = null;
       this.modalActive = false;
@@ -22047,11 +22057,11 @@ __webpack_require__.r(__webpack_exports__);
         address: this.fieldValue
       });
       response.then(function (data) {
-        var _data$data$data, _data$data2;
+        var _data$data$data, _data$data3;
 
         _this2.resetData();
 
-        var website = (_data$data$data = data === null || data === void 0 ? void 0 : (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.data) !== null && _data$data$data !== void 0 ? _data$data$data : false;
+        var website = (_data$data$data = data === null || data === void 0 ? void 0 : (_data$data3 = data.data) === null || _data$data3 === void 0 ? void 0 : _data$data3.data) !== null && _data$data$data !== void 0 ? _data$data$data : false;
 
         if (website) {
           _this2.websites.push(website);
@@ -22082,11 +22092,11 @@ __webpack_require__.r(__webpack_exports__);
         address: this.fieldValue
       });
       response.then(function (data) {
-        var _data$data$data2, _data$data3;
+        var _data$data$data2, _data$data4;
 
         _this3.resetData();
 
-        var website = (_data$data$data2 = data === null || data === void 0 ? void 0 : (_data$data3 = data.data) === null || _data$data3 === void 0 ? void 0 : _data$data3.data) !== null && _data$data$data2 !== void 0 ? _data$data$data2 : false;
+        var website = (_data$data$data2 = data === null || data === void 0 ? void 0 : (_data$data4 = data.data) === null || _data$data4 === void 0 ? void 0 : _data$data4.data) !== null && _data$data$data2 !== void 0 ? _data$data$data2 : false;
 
         if (website) {
           var index = _this3.websites.findIndex(function (object) {
@@ -24461,16 +24471,24 @@ var _hoisted_11 = {
   key: 1
 };
 var _hoisted_12 = {
+  key: 0,
+  "class": "mt-6"
+};
+var _hoisted_13 = {
+  "class": "flex flex-wrap"
+};
+var _hoisted_14 = ["href", "innerHTML"];
+var _hoisted_15 = {
   "class": "space-x-2 space-y-2"
 };
 
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Delete ");
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Delete ");
 
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cancel ");
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cancel ");
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Update ");
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Update ");
 
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Save ");
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Save ");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
@@ -24524,7 +24542,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     ))]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_dialog_modal, {
+  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _ctx.pages.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("nav", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_13, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.pages, function (page) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
+      key: page.label,
+      "class": "p-4"
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+      href: _ctx.correctLink(page.url),
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["text-[#6875F5]", {
+        'pointer-events-none': !page.url || page.active,
+        'opacity-80': !page.url || page.active
+      }]),
+      innerHTML: page.label
+    }, null, 10
+    /* CLASS, PROPS */
+    , _hoisted_14)]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_dialog_modal, {
     show: _ctx.modalActive,
     onClose: _cache[3] || (_cache[3] = function ($event) {
       return _ctx.modalActive = false;
@@ -24550,7 +24584,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["modelValue"])];
     }),
     footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [_ctx.managedId ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_danger_button, {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [_ctx.managedId ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_danger_button, {
         key: 0,
         onClick: _ctx.removeAddressAction,
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
@@ -24559,7 +24593,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         disabled: _ctx.formProcessing
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_13];
+          return [_hoisted_16];
         }),
         _: 1
         /* STABLE */
@@ -24572,7 +24606,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         })
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_14];
+          return [_hoisted_17];
         }),
         _: 1
         /* STABLE */
@@ -24586,7 +24620,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         disabled: _ctx.formProcessing
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_15];
+          return [_hoisted_18];
         }),
         _: 1
         /* STABLE */
@@ -24602,7 +24636,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         disabled: _ctx.formProcessing
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_16];
+          return [_hoisted_19];
         }),
         _: 1
         /* STABLE */
@@ -26783,16 +26817,24 @@ var _hoisted_11 = {
   key: 1
 };
 var _hoisted_12 = {
+  key: 0,
+  "class": "mt-6"
+};
+var _hoisted_13 = {
+  "class": "flex flex-wrap"
+};
+var _hoisted_14 = ["href", "innerHTML"];
+var _hoisted_15 = {
   "class": "space-x-2 space-y-2"
 };
 
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Delete ");
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Delete ");
 
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cancel ");
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cancel ");
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Update ");
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Update ");
 
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Save ");
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Save ");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
@@ -26846,7 +26888,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     ))]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_dialog_modal, {
+  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _ctx.pages.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("nav", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_13, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.pages, function (page) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
+      key: page.label,
+      "class": "p-4"
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+      href: _ctx.correctLink(page.url),
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["text-[#6875F5]", {
+        'pointer-events-none': !page.url || page.active,
+        'opacity-80': !page.url || page.active
+      }]),
+      innerHTML: page.label
+    }, null, 10
+    /* CLASS, PROPS */
+    , _hoisted_14)]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_dialog_modal, {
     show: _ctx.modalActive,
     onClose: _cache[3] || (_cache[3] = function ($event) {
       return _ctx.modalActive = false;
@@ -26872,7 +26930,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["modelValue"])];
     }),
     footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [_ctx.managedId ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_danger_button, {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [_ctx.managedId ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_danger_button, {
         key: 0,
         onClick: _ctx.removeWebsiteAction,
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
@@ -26881,7 +26939,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         disabled: _ctx.formProcessing
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_13];
+          return [_hoisted_16];
         }),
         _: 1
         /* STABLE */
@@ -26894,7 +26952,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         })
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_14];
+          return [_hoisted_17];
         }),
         _: 1
         /* STABLE */
@@ -26908,7 +26966,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         disabled: _ctx.formProcessing
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_15];
+          return [_hoisted_18];
         }),
         _: 1
         /* STABLE */
@@ -26924,7 +26982,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         disabled: _ctx.formProcessing
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_16];
+          return [_hoisted_19];
         }),
         _: 1
         /* STABLE */
