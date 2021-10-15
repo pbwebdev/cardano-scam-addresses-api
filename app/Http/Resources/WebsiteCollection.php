@@ -3,9 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class WebsiteCollection extends ResourceCollection
+class WebsiteCollection extends ApiCollection
 {
     /**
      * Transform the resource collection into an array.
