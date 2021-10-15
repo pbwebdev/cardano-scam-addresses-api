@@ -25,7 +25,7 @@ class WebsiteController extends Controller
      */
     public function index(): JsonResponse
     {
-        $data = new WebsiteCollection(Website::paginate(10));
+        $data = new WebsiteCollection(Website::paginate(request('per_page', 100)));
 
         return $data->response();
     }
