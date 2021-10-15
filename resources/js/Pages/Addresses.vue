@@ -15,9 +15,9 @@
                         </h1>
 
                         <jet-button
-                            @click="createAddress.modal = true"
-                            v-if="isAdmin" :class="{ 'opacity-25': createAddress.processing }"
-                            :disabled="createAddress.processing">
+                            @click="modalActive = true"
+                            v-if="isAdmin" :class="{ 'opacity-25': formProcessing }"
+                            :disabled="formProcessing">
                             Add
                         </jet-button>
                     </div>
@@ -41,56 +41,37 @@
         </div>
     </div>
 
-    <jet-dialog-modal :show="createAddress.modal" @close="createAddress.modal = false">
+    <jet-dialog-modal :show="modalActive" @close="modalActive = false">
         <template #title>
-            Add New Address
+            {{ modalTitle }}
         </template>
 
         <template #content>
-            <jet-input type="text" class="w-full" v-model="createAddress.address"
+            <jet-input type="text" class="w-full" v-model="fieldValue"
                        required autofocus />
         </template>
 
         <template #footer>
             <div class="space-x-2 space-y-2">
-                <jet-secondary-button @click="createAddress.modal = false">
-                    Cancel
-                </jet-secondary-button>
-
-                <jet-button @click="createAddressAction"
-                            :class="{ 'opacity-25': createAddress.processing }"
-                            :disabled="createAddress.processing">
-                    Save
-                </jet-button>
-            </div>
-        </template>
-    </jet-dialog-modal>
-
-    <jet-dialog-modal :show="editAddress.modal" @close="editAddress.modal = false">
-        <template #title>
-            Edit Address
-        </template>
-
-        <template #content>
-            <jet-input type="text" class="w-full" v-model="editAddress.address"
-                       required autofocus />
-        </template>
-
-        <template #footer>
-            <div class="space-x-2 space-y-2">
-                <jet-danger-button @click="removeAddressAction"
-                                   :class="{ 'opacity-25': editAddress.processing }" :disabled="editAddress.processing">
+                <jet-danger-button v-if="managedId" @click="removeAddressAction"
+                                   :class="{ 'opacity-25': formProcessing }" :disabled="formProcessing">
                     Delete
                 </jet-danger-button>
 
-                <jet-secondary-button @click="editAddress.modal = false">
+                <jet-secondary-button @click="modalActive = false">
                     Cancel
                 </jet-secondary-button>
 
-                <jet-button @click="editAddressAction"
-                            :class="{ 'opacity-25': editAddress.processing }"
-                            :disabled="editAddress.processing">
+                <jet-button v-if="managedId" @click="editAddressAction"
+                            :class="{ 'opacity-25': formProcessing }"
+                            :disabled="formProcessing">
                     Update
+                </jet-button>
+
+                <jet-button v-else @click="createAddressAction"
+                            :class="{ 'opacity-25': formProcessing }"
+                            :disabled="formProcessing">
+                    Save
                 </jet-button>
             </div>
         </template>
@@ -126,17 +107,16 @@
         data() {
             return {
                 addresses: [],
-                createAddress: {
-                    modal: false,
-                    address: null,
-                    processing: false,
-                },
-                editAddress: {
-                    id: null,
-                    modal: false,
-                    address: null,
-                    processing: false,
-                },
+                managedId: null,
+                modalActive: false,
+                fieldValue: null,
+                formProcessing: false,
+            }
+        },
+
+        computed: {
+            modalTitle: function () {
+                return `${this.managedId ? 'Edit' : 'Add New'} Address`;
             }
         },
 
@@ -149,19 +129,22 @@
         },
 
         methods: {
+            resetData() {
+                this.managedId = null;
+                this.modalActive = false;
+                this.fieldValue = null;
+                this.formProcessing = false;
+            },
+
             createAddressAction() {
-                this.createAddress.processing = true;
+                this.formProcessing = true;
 
                 const response = axios.post(route('addresses.store'), {
-                    address: this.createAddress.address,
+                    address: this.fieldValue,
                 });
 
                 response.then(data => {
-                    this.createAddress = {
-                        modal: false,
-                        address: null,
-                        processing: false,
-                    }
+                    this.resetData();
 
                     const address = data?.data?.data ?? false;
 
@@ -174,28 +157,23 @@
             },
 
             manageAddressAction(id) {
-                this.editAddress.id = id;
-                this.editAddress.modal = true;
+                this.managedId = id;
+                this.modalActive = true;
 
                 const index = this.addresses.findIndex(object => object.id === id);
 
-                this.editAddress.address = this.addresses[index].address;
+                this.fieldValue = this.addresses[index].address;
             },
 
             editAddressAction() {
-                this.editAddress.processing = true;
+                this.formProcessing = true;
 
-                const response = axios.patch(route('addresses.update', this.editAddress.id), {
-                    address: this.editAddress.address,
+                const response = axios.patch(route('addresses.update', this.managedId), {
+                    address: this.fieldValue,
                 });
 
                 response.then(data => {
-                    this.editAddress = {
-                        id: null,
-                        modal: false,
-                        address: null,
-                        processing: false,
-                    }
+                    this.resetData();
 
                     const address = data?.data?.data ?? false;
 
@@ -210,20 +188,14 @@
             },
 
             removeAddressAction() {
-                this.editAddress.processing = true;
+                this.formProcessing = true;
 
-                const response = axios.delete(route('addresses.destroy', this.editAddress.id));
+                const response = axios.delete(route('addresses.destroy', this.managedId));
 
                 response.then(data => {
-                    const index = this.addresses.findIndex(object => object.id === this.editAddress.id);
+                    const index = this.addresses.findIndex(object => object.id === this.managedId);
 
-                    this.editAddress = {
-                        id: null,
-                        modal: false,
-                        address: null,
-                        processing: false,
-                    }
-
+                    this.resetData();
                     this.addresses.splice(index, 1);
 
                     return data;

@@ -15,9 +15,9 @@
                         </h1>
 
                         <jet-button
-                            @click="createWebsite.modal = true"
-                            v-if="isAdmin" :class="{ 'opacity-25': createWebsite.processing }"
-                            :disabled="createWebsite.processing">
+                            @click="modalActive = true"
+                            v-if="isAdmin" :class="{ 'opacity-25': formProcessing }"
+                            :disabled="formProcessing">
                             Add
                         </jet-button>
                     </div>
@@ -41,56 +41,37 @@
         </div>
     </div>
 
-    <jet-dialog-modal :show="createWebsite.modal" @close="createWebsite.modal = false">
+    <jet-dialog-modal :show="modalActive" @close="modalActive = false">
         <template #title>
-            Add New Website
+            {{ modalTitle }}
         </template>
 
         <template #content>
-            <jet-input type="text" class="w-full" v-model="createWebsite.address"
+            <jet-input type="text" class="w-full" v-model="fieldValue"
                        required autofocus />
         </template>
 
         <template #footer>
             <div class="space-x-2 space-y-2">
-                <jet-secondary-button @click="createWebsite.modal = false">
-                    Cancel
-                </jet-secondary-button>
-
-                <jet-button @click="createWebsiteAction"
-                            :class="{ 'opacity-25': createWebsite.processing }"
-                            :disabled="createWebsite.processing">
-                    Save
-                </jet-button>
-            </div>
-        </template>
-    </jet-dialog-modal>
-
-    <jet-dialog-modal :show="editWebsite.modal" @close="editWebsite.modal = false">
-        <template #title>
-            Edit Website
-        </template>
-
-        <template #content>
-            <jet-input type="text" class="w-full" v-model="editWebsite.address"
-                       required autofocus />
-        </template>
-
-        <template #footer>
-            <div class="space-x-2 space-y-2">
-                <jet-danger-button @click="removeWebsiteAction"
-                                   :class="{ 'opacity-25': editWebsite.processing }" :disabled="editWebsite.processing">
+                <jet-danger-button v-if="managedId" @click="removeWebsiteAction"
+                                   :class="{ 'opacity-25': formProcessing }" :disabled="formProcessing">
                     Delete
                 </jet-danger-button>
 
-                <jet-secondary-button @click="editWebsite.modal = false">
+                <jet-secondary-button @click="modalActive = false">
                     Cancel
                 </jet-secondary-button>
 
-                <jet-button @click="editWebsiteAction"
-                            :class="{ 'opacity-25': editWebsite.processing }"
-                            :disabled="editWebsite.processing">
+                <jet-button v-if="managedId" @click="editWebsiteAction"
+                            :class="{ 'opacity-25': formProcessing }"
+                            :disabled="formProcessing">
                     Update
+                </jet-button>
+
+                <jet-button v-else @click="createWebsiteAction"
+                            :class="{ 'opacity-25': formProcessing }"
+                            :disabled="formProcessing">
+                    Save
                 </jet-button>
             </div>
         </template>
@@ -126,17 +107,16 @@
         data() {
             return {
                 websites: [],
-                createWebsite: {
-                    modal: false,
-                    address: null,
-                    processing: false,
-                },
-                editWebsite: {
-                    id: null,
-                    modal: false,
-                    address: null,
-                    processing: false,
-                },
+                managedId: null,
+                modalActive: false,
+                fieldValue: null,
+                formProcessing: false,
+            }
+        },
+
+        computed: {
+            modalTitle: function () {
+                return `${this.managedId ? 'Edit' : 'Add New'} Website`;
             }
         },
 
@@ -149,19 +129,22 @@
         },
 
         methods: {
+            resetData() {
+                this.managedId = null;
+                this.modalActive = false;
+                this.fieldValue = null;
+                this.formProcessing = false;
+            },
+
             createWebsiteAction() {
-                this.createWebsite.processing = true;
+                this.formProcessing = true;
 
                 const response = axios.post(route('websites.store'), {
-                    address: this.createWebsite.address,
+                    address: this.fieldValue,
                 });
 
                 response.then(data => {
-                    this.createWebsite = {
-                        modal: false,
-                        address: null,
-                        processing: false,
-                    }
+                    this.resetData();
 
                     const website = data?.data?.data ?? false;
 
@@ -174,28 +157,23 @@
             },
 
             manageWebsiteAction(id) {
-                this.editWebsite.id = id;
-                this.editWebsite.modal = true;
+                this.managedId = id;
+                this.modalActive = true;
 
                 const index = this.websites.findIndex(object => object.id === id);
 
-                this.editWebsite.address = this.websites[index].address;
+                this.fieldValue = this.websites[index].address;
             },
 
             editWebsiteAction() {
-                this.editWebsite.processing = true;
+                this.formProcessing = true;
 
-                const response = axios.patch(route('websites.update', this.editWebsite.id), {
-                    address: this.editWebsite.address,
+                const response = axios.patch(route('websites.update', this.managedId), {
+                    address: this.fieldValue,
                 });
 
                 response.then(data => {
-                    this.editWebsite = {
-                        id: null,
-                        modal: false,
-                        address: null,
-                        processing: false,
-                    }
+                    this.resetData();
 
                     const website = data?.data?.data ?? false;
 
@@ -210,20 +188,14 @@
             },
 
             removeWebsiteAction() {
-                this.editWebsite.processing = true;
+                this.formProcessing = true;
 
-                const response = axios.delete(route('websites.destroy', this.editWebsite.id));
+                const response = axios.delete(route('websites.destroy', this.managedId));
 
                 response.then(data => {
-                    const index = this.websites.findIndex(object => object.id === this.editWebsite.id);
+                    const index = this.websites.findIndex(object => object.id === this.managedId);
 
-                    this.editWebsite = {
-                        id: null,
-                        modal: false,
-                        address: null,
-                        processing: false,
-                    }
-
+                    this.resetData();
                     this.websites.splice(index, 1);
 
                     return data;

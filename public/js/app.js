@@ -20855,18 +20855,16 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       addresses: [],
-      createAddress: {
-        modal: false,
-        address: null,
-        processing: false
-      },
-      editAddress: {
-        id: null,
-        modal: false,
-        address: null,
-        processing: false
-      }
+      managedId: null,
+      modalActive: false,
+      fieldValue: null,
+      formProcessing: false
     };
+  },
+  computed: {
+    modalTitle: function modalTitle() {
+      return "".concat(this.managedId ? 'Edit' : 'Add New', " Address");
+    }
   },
   mounted: function mounted() {
     var _this = this;
@@ -20879,21 +20877,24 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
+    resetData: function resetData() {
+      this.managedId = null;
+      this.modalActive = false;
+      this.fieldValue = null;
+      this.formProcessing = false;
+    },
     createAddressAction: function createAddressAction() {
       var _this2 = this;
 
-      this.createAddress.processing = true;
+      this.formProcessing = true;
       var response = axios.post(route('addresses.store'), {
-        address: this.createAddress.address
+        address: this.fieldValue
       });
       response.then(function (data) {
         var _data$data$data, _data$data2;
 
-        _this2.createAddress = {
-          modal: false,
-          address: null,
-          processing: false
-        };
+        _this2.resetData();
+
         var address = (_data$data$data = data === null || data === void 0 ? void 0 : (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.data) !== null && _data$data$data !== void 0 ? _data$data$data : false;
 
         if (address) {
@@ -20904,29 +20905,25 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     manageAddressAction: function manageAddressAction(id) {
-      this.editAddress.id = id;
-      this.editAddress.modal = true;
+      this.managedId = id;
+      this.modalActive = true;
       var index = this.addresses.findIndex(function (object) {
         return object.id === id;
       });
-      this.editAddress.address = this.addresses[index].address;
+      this.fieldValue = this.addresses[index].address;
     },
     editAddressAction: function editAddressAction() {
       var _this3 = this;
 
-      this.editAddress.processing = true;
-      var response = axios.patch(route('addresses.update', this.editAddress.id), {
-        address: this.editAddress.address
+      this.formProcessing = true;
+      var response = axios.patch(route('addresses.update', this.managedId), {
+        address: this.fieldValue
       });
       response.then(function (data) {
         var _data$data$data2, _data$data3;
 
-        _this3.editAddress = {
-          id: null,
-          modal: false,
-          address: null,
-          processing: false
-        };
+        _this3.resetData();
+
         var address = (_data$data$data2 = data === null || data === void 0 ? void 0 : (_data$data3 = data.data) === null || _data$data3 === void 0 ? void 0 : _data$data3.data) !== null && _data$data$data2 !== void 0 ? _data$data$data2 : false;
 
         if (address) {
@@ -20943,19 +20940,14 @@ __webpack_require__.r(__webpack_exports__);
     removeAddressAction: function removeAddressAction() {
       var _this4 = this;
 
-      this.editAddress.processing = true;
-      var response = axios["delete"](route('addresses.destroy', this.editAddress.id));
+      this.formProcessing = true;
+      var response = axios["delete"](route('addresses.destroy', this.managedId));
       response.then(function (data) {
         var index = _this4.addresses.findIndex(function (object) {
-          return object.id === _this4.editAddress.id;
+          return object.id === _this4.managedId;
         });
 
-        _this4.editAddress = {
-          id: null,
-          modal: false,
-          address: null,
-          processing: false
-        };
+        _this4.resetData();
 
         _this4.addresses.splice(index, 1);
 
@@ -22013,18 +22005,16 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       websites: [],
-      createWebsite: {
-        modal: false,
-        address: null,
-        processing: false
-      },
-      editWebsite: {
-        id: null,
-        modal: false,
-        address: null,
-        processing: false
-      }
+      managedId: null,
+      modalActive: false,
+      fieldValue: null,
+      formProcessing: false
     };
+  },
+  computed: {
+    modalTitle: function modalTitle() {
+      return "".concat(this.managedId ? 'Edit' : 'Add New', " Website");
+    }
   },
   mounted: function mounted() {
     var _this = this;
@@ -22037,21 +22027,24 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
+    resetData: function resetData() {
+      this.managedId = null;
+      this.modalActive = false;
+      this.fieldValue = null;
+      this.formProcessing = false;
+    },
     createWebsiteAction: function createWebsiteAction() {
       var _this2 = this;
 
-      this.createWebsite.processing = true;
+      this.formProcessing = true;
       var response = axios.post(route('websites.store'), {
-        address: this.createWebsite.address
+        address: this.fieldValue
       });
       response.then(function (data) {
         var _data$data$data, _data$data2;
 
-        _this2.createWebsite = {
-          modal: false,
-          address: null,
-          processing: false
-        };
+        _this2.resetData();
+
         var website = (_data$data$data = data === null || data === void 0 ? void 0 : (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2.data) !== null && _data$data$data !== void 0 ? _data$data$data : false;
 
         if (website) {
@@ -22062,29 +22055,25 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     manageWebsiteAction: function manageWebsiteAction(id) {
-      this.editWebsite.id = id;
-      this.editWebsite.modal = true;
+      this.managedId = id;
+      this.modalActive = true;
       var index = this.websites.findIndex(function (object) {
         return object.id === id;
       });
-      this.editWebsite.address = this.websites[index].address;
+      this.fieldValue = this.websites[index].address;
     },
     editWebsiteAction: function editWebsiteAction() {
       var _this3 = this;
 
-      this.editWebsite.processing = true;
-      var response = axios.patch(route('websites.update', this.editWebsite.id), {
-        address: this.editWebsite.address
+      this.formProcessing = true;
+      var response = axios.patch(route('websites.update', this.managedId), {
+        address: this.fieldValue
       });
       response.then(function (data) {
         var _data$data$data2, _data$data3;
 
-        _this3.editWebsite = {
-          id: null,
-          modal: false,
-          address: null,
-          processing: false
-        };
+        _this3.resetData();
+
         var website = (_data$data$data2 = data === null || data === void 0 ? void 0 : (_data$data3 = data.data) === null || _data$data3 === void 0 ? void 0 : _data$data3.data) !== null && _data$data$data2 !== void 0 ? _data$data$data2 : false;
 
         if (website) {
@@ -22101,19 +22090,14 @@ __webpack_require__.r(__webpack_exports__);
     removeWebsiteAction: function removeWebsiteAction() {
       var _this4 = this;
 
-      this.editWebsite.processing = true;
-      var response = axios["delete"](route('websites.destroy', this.editWebsite.id));
+      this.formProcessing = true;
+      var response = axios["delete"](route('websites.destroy', this.managedId));
       response.then(function (data) {
         var index = _this4.websites.findIndex(function (object) {
-          return object.id === _this4.editWebsite.id;
+          return object.id === _this4.managedId;
         });
 
-        _this4.editWebsite = {
-          id: null,
-          modal: false,
-          address: null,
-          processing: false
-        };
+        _this4.resetData();
 
         _this4.websites.splice(index, 1);
 
@@ -24464,28 +24448,17 @@ var _hoisted_10 = ["onClick"];
 var _hoisted_11 = {
   key: 1
 };
-
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Add New Address ");
-
-var _hoisted_13 = {
+var _hoisted_12 = {
   "class": "space-x-2 space-y-2"
 };
+
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Delete ");
 
 var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cancel ");
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Save ");
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Update ");
 
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Edit Address ");
-
-var _hoisted_17 = {
-  "class": "space-x-2 space-y-2"
-};
-
-var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Delete ");
-
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cancel ");
-
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Update ");
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Save ");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
@@ -24496,23 +24469,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_jet_input = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-input");
 
+  var _component_jet_danger_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-danger-button");
+
   var _component_jet_secondary_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-secondary-button");
 
   var _component_jet_dialog_modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-dialog-modal");
-
-  var _component_jet_danger_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-danger-button");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Head, {
     title: "Addresses"
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_authentication_card_logo)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_hoisted_6, _ctx.isAdmin ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_button, {
     key: 0,
     onClick: _cache[0] || (_cache[0] = function ($event) {
-      return _ctx.createAddress.modal = true;
+      return _ctx.modalActive = true;
     }),
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
-      'opacity-25': _ctx.createAddress.processing
+      'opacity-25': _ctx.formProcessing
     }),
-    disabled: _ctx.createAddress.processing
+    disabled: _ctx.formProcessing
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_7];
@@ -24540,21 +24513,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }), 128
   /* KEYED_FRAGMENT */
   ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_dialog_modal, {
-    show: _ctx.createAddress.modal,
+    show: _ctx.modalActive,
     onClose: _cache[3] || (_cache[3] = function ($event) {
-      return _ctx.createAddress.modal = false;
+      return _ctx.modalActive = false;
     })
   }, {
     title: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_12];
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.modalTitle), 1
+      /* TEXT */
+      )];
     }),
     content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         type: "text",
         "class": "w-full",
-        modelValue: _ctx.createAddress.address,
+        modelValue: _ctx.fieldValue,
         "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
-          return _ctx.createAddress.address = $event;
+          return _ctx.fieldValue = $event;
         }),
         required: "",
         autofocus: ""
@@ -24563,9 +24538,25 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["modelValue"])];
     }),
     footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_secondary_button, {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [_ctx.managedId ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_danger_button, {
+        key: 0,
+        onClick: _ctx.removeAddressAction,
+        "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
+          'opacity-25': _ctx.formProcessing
+        }),
+        disabled: _ctx.formProcessing
+      }, {
+        "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+          return [_hoisted_13];
+        }),
+        _: 1
+        /* STABLE */
+
+      }, 8
+      /* PROPS */
+      , ["onClick", "class", "disabled"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_secondary_button, {
         onClick: _cache[2] || (_cache[2] = function ($event) {
-          return _ctx.createAddress.modal = false;
+          return _ctx.modalActive = false;
         })
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -24574,12 +24565,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         _: 1
         /* STABLE */
 
-      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
-        onClick: _ctx.createAddressAction,
+      }), _ctx.managedId ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_button, {
+        key: 1,
+        onClick: _ctx.editAddressAction,
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
-          'opacity-25': _ctx.createAddress.processing
+          'opacity-25': _ctx.formProcessing
         }),
-        disabled: _ctx.createAddress.processing
+        disabled: _ctx.formProcessing
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [_hoisted_15];
@@ -24589,79 +24581,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
       }, 8
       /* PROPS */
-      , ["onClick", "class", "disabled"])])];
-    }),
-    _: 1
-    /* STABLE */
-
-  }, 8
-  /* PROPS */
-  , ["show"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_dialog_modal, {
-    show: _ctx.editAddress.modal,
-    onClose: _cache[6] || (_cache[6] = function ($event) {
-      return _ctx.editAddress.modal = false;
-    })
-  }, {
-    title: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_16];
-    }),
-    content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
-        type: "text",
-        "class": "w-full",
-        modelValue: _ctx.editAddress.address,
-        "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
-          return _ctx.editAddress.address = $event;
-        }),
-        required: "",
-        autofocus: ""
-      }, null, 8
-      /* PROPS */
-      , ["modelValue"])];
-    }),
-    footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_danger_button, {
-        onClick: _ctx.removeAddressAction,
+      , ["onClick", "class", "disabled"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_button, {
+        key: 2,
+        onClick: _ctx.createAddressAction,
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
-          'opacity-25': _ctx.editAddress.processing
+          'opacity-25': _ctx.formProcessing
         }),
-        disabled: _ctx.editAddress.processing
+        disabled: _ctx.formProcessing
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_18];
+          return [_hoisted_16];
         }),
         _: 1
         /* STABLE */
 
       }, 8
       /* PROPS */
-      , ["onClick", "class", "disabled"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_secondary_button, {
-        onClick: _cache[5] || (_cache[5] = function ($event) {
-          return _ctx.editAddress.modal = false;
-        })
-      }, {
-        "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_19];
-        }),
-        _: 1
-        /* STABLE */
-
-      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
-        onClick: _ctx.editAddressAction,
-        "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
-          'opacity-25': _ctx.editAddress.processing
-        }),
-        disabled: _ctx.editAddress.processing
-      }, {
-        "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_20];
-        }),
-        _: 1
-        /* STABLE */
-
-      }, 8
-      /* PROPS */
-      , ["onClick", "class", "disabled"])])];
+      , ["onClick", "class", "disabled"]))])];
     }),
     _: 1
     /* STABLE */
@@ -26834,28 +26770,17 @@ var _hoisted_10 = ["onClick"];
 var _hoisted_11 = {
   key: 1
 };
-
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Add New Website ");
-
-var _hoisted_13 = {
+var _hoisted_12 = {
   "class": "space-x-2 space-y-2"
 };
+
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Delete ");
 
 var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cancel ");
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Save ");
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Update ");
 
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Edit Website ");
-
-var _hoisted_17 = {
-  "class": "space-x-2 space-y-2"
-};
-
-var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Delete ");
-
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cancel ");
-
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Update ");
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Save ");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
@@ -26866,23 +26791,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_jet_input = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-input");
 
+  var _component_jet_danger_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-danger-button");
+
   var _component_jet_secondary_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-secondary-button");
 
   var _component_jet_dialog_modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-dialog-modal");
-
-  var _component_jet_danger_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-danger-button");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Head, {
     title: "Websites"
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_authentication_card_logo)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_hoisted_6, _ctx.isAdmin ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_button, {
     key: 0,
     onClick: _cache[0] || (_cache[0] = function ($event) {
-      return _ctx.createWebsite.modal = true;
+      return _ctx.modalActive = true;
     }),
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
-      'opacity-25': _ctx.createWebsite.processing
+      'opacity-25': _ctx.formProcessing
     }),
-    disabled: _ctx.createWebsite.processing
+    disabled: _ctx.formProcessing
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_7];
@@ -26910,21 +26835,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }), 128
   /* KEYED_FRAGMENT */
   ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_dialog_modal, {
-    show: _ctx.createWebsite.modal,
+    show: _ctx.modalActive,
     onClose: _cache[3] || (_cache[3] = function ($event) {
-      return _ctx.createWebsite.modal = false;
+      return _ctx.modalActive = false;
     })
   }, {
     title: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_12];
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.modalTitle), 1
+      /* TEXT */
+      )];
     }),
     content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         type: "text",
         "class": "w-full",
-        modelValue: _ctx.createWebsite.address,
+        modelValue: _ctx.fieldValue,
         "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
-          return _ctx.createWebsite.address = $event;
+          return _ctx.fieldValue = $event;
         }),
         required: "",
         autofocus: ""
@@ -26933,9 +26860,25 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["modelValue"])];
     }),
     footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_secondary_button, {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [_ctx.managedId ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_danger_button, {
+        key: 0,
+        onClick: _ctx.removeWebsiteAction,
+        "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
+          'opacity-25': _ctx.formProcessing
+        }),
+        disabled: _ctx.formProcessing
+      }, {
+        "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+          return [_hoisted_13];
+        }),
+        _: 1
+        /* STABLE */
+
+      }, 8
+      /* PROPS */
+      , ["onClick", "class", "disabled"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_secondary_button, {
         onClick: _cache[2] || (_cache[2] = function ($event) {
-          return _ctx.createWebsite.modal = false;
+          return _ctx.modalActive = false;
         })
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -26944,12 +26887,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         _: 1
         /* STABLE */
 
-      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
-        onClick: _ctx.createWebsiteAction,
+      }), _ctx.managedId ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_button, {
+        key: 1,
+        onClick: _ctx.editWebsiteAction,
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
-          'opacity-25': _ctx.createWebsite.processing
+          'opacity-25': _ctx.formProcessing
         }),
-        disabled: _ctx.createWebsite.processing
+        disabled: _ctx.formProcessing
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [_hoisted_15];
@@ -26959,79 +26903,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
       }, 8
       /* PROPS */
-      , ["onClick", "class", "disabled"])])];
-    }),
-    _: 1
-    /* STABLE */
-
-  }, 8
-  /* PROPS */
-  , ["show"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_dialog_modal, {
-    show: _ctx.editWebsite.modal,
-    onClose: _cache[6] || (_cache[6] = function ($event) {
-      return _ctx.editWebsite.modal = false;
-    })
-  }, {
-    title: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_16];
-    }),
-    content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
-        type: "text",
-        "class": "w-full",
-        modelValue: _ctx.editWebsite.address,
-        "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
-          return _ctx.editWebsite.address = $event;
-        }),
-        required: "",
-        autofocus: ""
-      }, null, 8
-      /* PROPS */
-      , ["modelValue"])];
-    }),
-    footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_danger_button, {
-        onClick: _ctx.removeWebsiteAction,
+      , ["onClick", "class", "disabled"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_button, {
+        key: 2,
+        onClick: _ctx.createWebsiteAction,
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
-          'opacity-25': _ctx.editWebsite.processing
+          'opacity-25': _ctx.formProcessing
         }),
-        disabled: _ctx.editWebsite.processing
+        disabled: _ctx.formProcessing
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_18];
+          return [_hoisted_16];
         }),
         _: 1
         /* STABLE */
 
       }, 8
       /* PROPS */
-      , ["onClick", "class", "disabled"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_secondary_button, {
-        onClick: _cache[5] || (_cache[5] = function ($event) {
-          return _ctx.editWebsite.modal = false;
-        })
-      }, {
-        "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_19];
-        }),
-        _: 1
-        /* STABLE */
-
-      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
-        onClick: _ctx.editWebsiteAction,
-        "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
-          'opacity-25': _ctx.editWebsite.processing
-        }),
-        disabled: _ctx.editWebsite.processing
-      }, {
-        "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_20];
-        }),
-        _: 1
-        /* STABLE */
-
-      }, 8
-      /* PROPS */
-      , ["onClick", "class", "disabled"])])];
+      , ["onClick", "class", "disabled"]))])];
     }),
     _: 1
     /* STABLE */
