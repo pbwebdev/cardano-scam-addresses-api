@@ -20,7 +20,7 @@ class PaginatedResourceResponse extends BaseResponse
         $paginated = $this->resource->resource->toArray();
 
         if (EnsureFrontendRequestsAreStateful::fromFrontend($request)) {
-            return ['pagination' => $paginated['links']];
+            return ['pagination' => $paginated['total'] > $paginated['per_page'] ? $paginated['links'] : []];
         }
 
         return [
