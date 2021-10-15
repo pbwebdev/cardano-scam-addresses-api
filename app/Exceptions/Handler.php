@@ -60,8 +60,7 @@ class Handler extends ExceptionHandler
     {
         $response = parent::render($request, $e);
 
-        /** @noinspection NullPointerExceptionInspection */
-        if ('api' === $request->route()->getPrefix()) {
+        if ($request->route() && 'api' === $request->route()->getPrefix()) {
             if ($e instanceof ModelNotFoundException) {
                 $response->setData(['message' => 'Requested resource was not found.']);
             } elseif ($e instanceof InvalidAddressException) {
