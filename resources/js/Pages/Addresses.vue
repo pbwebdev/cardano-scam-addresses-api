@@ -15,7 +15,7 @@
                         </h1>
 
                         <jet-button
-                            @click="modalActive = true"
+                            @click="manageAddressAction(null)"
                             v-if="isAdmin" :class="{ 'opacity-25': formProcessing }"
                             :disabled="formProcessing">
                             Add
@@ -159,10 +159,14 @@
             manageAddressAction(id) {
                 this.managedId = id;
                 this.modalActive = true;
+                let changeValue = null;
 
-                const index = this.addresses.findIndex(object => object.id === id);
+                if (id) {
+                    const index = this.addresses.findIndex(object => object.id === id);
+                    changeValue = this.addresses[index].address;
+                }
 
-                this.fieldValue = this.addresses[index].address;
+                this.fieldValue = changeValue;
             },
 
             editAddressAction() {

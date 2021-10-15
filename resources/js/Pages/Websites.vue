@@ -15,7 +15,7 @@
                         </h1>
 
                         <jet-button
-                            @click="modalActive = true"
+                            @click="manageWebsiteAction(null)"
                             v-if="isAdmin" :class="{ 'opacity-25': formProcessing }"
                             :disabled="formProcessing">
                             Add
@@ -159,10 +159,14 @@
             manageWebsiteAction(id) {
                 this.managedId = id;
                 this.modalActive = true;
+                let changeValue = null;
 
-                const index = this.websites.findIndex(object => object.id === id);
+                if (id) {
+                    const index = this.websites.findIndex(object => object.id === id);
+                    changeValue = this.websites[index].address;
+                }
 
-                this.fieldValue = this.websites[index].address;
+                this.fieldValue = changeValue;
             },
 
             editWebsiteAction() {

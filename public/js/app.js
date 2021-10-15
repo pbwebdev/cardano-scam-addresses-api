@@ -20907,10 +20907,16 @@ __webpack_require__.r(__webpack_exports__);
     manageAddressAction: function manageAddressAction(id) {
       this.managedId = id;
       this.modalActive = true;
-      var index = this.addresses.findIndex(function (object) {
-        return object.id === id;
-      });
-      this.fieldValue = this.addresses[index].address;
+      var changeValue = null;
+
+      if (id) {
+        var index = this.addresses.findIndex(function (object) {
+          return object.id === id;
+        });
+        changeValue = this.addresses[index].address;
+      }
+
+      this.fieldValue = changeValue;
     },
     editAddressAction: function editAddressAction() {
       var _this3 = this;
@@ -22057,10 +22063,16 @@ __webpack_require__.r(__webpack_exports__);
     manageWebsiteAction: function manageWebsiteAction(id) {
       this.managedId = id;
       this.modalActive = true;
-      var index = this.websites.findIndex(function (object) {
-        return object.id === id;
-      });
-      this.fieldValue = this.websites[index].address;
+      var changeValue = null;
+
+      if (id) {
+        var index = this.websites.findIndex(function (object) {
+          return object.id === id;
+        });
+        changeValue = this.websites[index].address;
+      }
+
+      this.fieldValue = changeValue;
     },
     editWebsiteAction: function editWebsiteAction() {
       var _this3 = this;
@@ -24480,7 +24492,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_authentication_card_logo)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_hoisted_6, _ctx.isAdmin ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_button, {
     key: 0,
     onClick: _cache[0] || (_cache[0] = function ($event) {
-      return _ctx.modalActive = true;
+      return _ctx.manageAddressAction(null);
     }),
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'opacity-25': _ctx.formProcessing
@@ -26802,7 +26814,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_authentication_card_logo)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_hoisted_6, _ctx.isAdmin ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_button, {
     key: 0,
     onClick: _cache[0] || (_cache[0] = function ($event) {
-      return _ctx.modalActive = true;
+      return _ctx.manageWebsiteAction(null);
     }),
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'opacity-25': _ctx.formProcessing
