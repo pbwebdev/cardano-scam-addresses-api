@@ -34,4 +34,10 @@ return [
         'network'    => env('BLOCKFROST_NETWORK', 'testnet'),
         'project_id' => env('BLOCKFROST_PROJECT_ID', ''),
     ],
+
+    'tangocrypto' => [
+        'network'    => env('TANGOCRYPTO_NETWORK', 'testnet'),
+        'account_id' => env('TANGOCRYPTO_ACCOUNT_ID', ''),
+        'x_api_key'  => env('TANGOCRYPTO_X_API_KEY', ''),
+    ],
 ];
