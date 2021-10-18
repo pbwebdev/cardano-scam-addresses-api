@@ -10,16 +10,22 @@ use App\Http\Resources\WalletResource;
 use App\Models\Wallet;
 use App\Rules\Bech32Address;
 use App\Rules\CardanoAddress;
+use App\TangoCrypto;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 
 class WalletController extends Controller
 {
+    public const SERVICE_PROVIDER = [
+        'blockfrost'  => Blockfrost::class,
+        'tangocrypto' => TangoCrypto::class,
+    ];
+
     /**
-     * @var Blockfrost
+     * @var Blockfrost|TangoCrypto
      */
-    private $blockfrost;
+    private $serviceProvider;
     /**
      * @var CardanoAddress
      */
@@ -33,8 +39,20 @@ class WalletController extends Controller
     {
         $this->middleware('can:administrate')->only(['update', 'destroy']);
 
-        $this->blockfrost = app()->make(Blockfrost::class);
+        $this->setServiceProvider();
+
         $this->cardanoAddress = new CardanoAddress();
+    }
+
+    private function setServiceProvider()
+    {
+        $serviceProvider = config('services.cardano.service_provider');
+
+        if (! array_key_exists($serviceProvider, self::SERVICE_PROVIDER)) {
+            $serviceProvider = 'blockfrost';
+        }
+
+        $this->serviceProvider = app()->make(self::SERVICE_PROVIDER[$serviceProvider]);
     }
 
     /**
@@ -133,7 +151,7 @@ class WalletController extends Controller
     protected function maybeInvalidAddress(string &$data): void
     {
         if (! $this->cardanoAddress->isStake($data)) {
-            $data = $this->blockfrost->getStakeAddress($data);
+            $data = $this->serviceProvider->getStakeAddress($data);
 
             if (! $data) {
                 throw new InvalidAddressException();

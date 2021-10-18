@@ -28,7 +28,7 @@ class CardanoAddress implements Rule
      */
     public function __construct()
     {
-        $network = config('services.blockfrost.network');
+        $network = config('services.cardano.query_network');
 
         if (! array_key_exists($network, self::HRPS)) {
             $network = 'testnet';

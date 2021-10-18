@@ -20,7 +20,7 @@ class TangoCryptoServiceProvider extends ServiceProvider implements DeferrablePr
             return new TangoCryptoClient(
                 config('services.tangocrypto.account_id'),
                 config('services.tangocrypto.x_api_key'),
-                config('services.tangocrypto.network')
+                config('services.cardano.query_network')
             );
         });
 

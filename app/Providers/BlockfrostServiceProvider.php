@@ -19,7 +19,7 @@ class BlockfrostServiceProvider extends ServiceProvider implements DeferrablePro
         $this->app->bind(BlockfrostClient::class, function () {
             return new BlockfrostClient(
                 config('services.blockfrost.project_id'),
-                config('services.blockfrost.network')
+                config('services.cardano.query_network')
             );
         });
 

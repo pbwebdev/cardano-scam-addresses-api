@@ -10,19 +10,19 @@ class CardanoAddressTest extends TestCase
 {
     public function test_address_is_valid(): void
     {
-        Config::set('services.blockfrost.network', 'mainnet');
+        Config::set('services.cardano.query_network', 'mainnet');
 
         $cardanoAddress = new CardanoAddress();
 
         $this->assertTrue($cardanoAddress->isValid('addr1'));
 
-        Config::set('services.blockfrost.network', 'testnet');
+        Config::set('services.cardano.query_network', 'testnet');
 
         $cardanoAddress = new CardanoAddress();
 
         $this->assertTrue($cardanoAddress->isValid('addr_test1'));
 
-        Config::set('services.blockfrost.network', 'unknown');
+        Config::set('services.cardano.query_network', 'unknown');
 
         $cardanoAddress = new CardanoAddress();
 
@@ -31,19 +31,19 @@ class CardanoAddressTest extends TestCase
 
     public function test_address_is_stake(): void
     {
-        Config::set('services.blockfrost.network', 'mainnet');
+        Config::set('services.cardano.query_network', 'mainnet');
 
         $cardanoAddress = new CardanoAddress();
 
         $this->assertTrue($cardanoAddress->isStake('stake1'));
 
-        Config::set('services.blockfrost.network', 'testnet');
+        Config::set('services.cardano.query_network', 'testnet');
 
         $cardanoAddress = new CardanoAddress();
 
         $this->assertTrue($cardanoAddress->isStake('stake_test1'));
 
-        Config::set('services.blockfrost.network', 'unknown');
+        Config::set('services.cardano.query_network', 'unknown');
 
         $cardanoAddress = new CardanoAddress();
 
