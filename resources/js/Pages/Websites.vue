@@ -1,69 +1,52 @@
 <template>
-    <Head title="Websites" />
+    <app-layout title="Websites">
+        <template #header>
+            <div class="flex justify-between items-center">
+                <h1 class="font-semibold text-xl text-gray-800 leading-tight">
+                    Websites
+                </h1>
 
-    <div class="font-sans text-gray-900 antialiased">
-        <div class="pt-4 bg-gray-100">
-            <div class="min-h-screen flex flex-col items-center pt-6 sm:pt-0">
-                <div class="flex justify-between items-center">
-                    <jet-authentication-card-logo />
-
-                    <Link :href="route('addresses')" class="ml-4 text-sm text-gray-700 underline">
-                        Addresses
-                    </Link>
-
-                    <Link :href="route('websites')" class="ml-4 text-sm text-gray-700 underline">
-                        Websites
-                    </Link>
-                </div>
-
-                <div class="w-full sm:max-w-2xl mt-6 p-6 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                    <div class="flex justify-between items-center">
-                        <h1 class="font-semibold text-2xl text-gray-800 leading-tight">
-                            Websites
-                        </h1>
-
-                        <jet-button
-                            @click="manageWebsiteAction(null)"
-                            v-if="isAdmin" :class="{ 'opacity-25': formProcessing }"
-                            :disabled="formProcessing">
-                            Add
-                        </jet-button>
-                    </div>
-
-                    <div v-if="websites.length > 0" class="mt-4 pt-4 border-t border-gray-200 overflow-x-auto">
-                        <ul class="list-decimal ml-10">
-                            <li v-for="data in websites" :key="data.id">
-                                <a href="#"
-                                   class="text-[#6875F5]"
-                                   @click="manageWebsiteAction(data.id)"
-                                   v-if="isAdmin"
-                                >
-                                    {{ data.address }}
-                                </a>
-                                <span v-else>{{ data.address }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <nav v-if="pages.length > 0" class="mt-6">
-                    <ol class="flex flex-wrap">
-                        <li v-for="page in pages" :key="page.label" class="p-4">
-                            <a :href="correctLink(page.url)"
-                               class="text-[#6875F5]"
-                               :class="{
-                                    'pointer-events-none': !page.url || page.active,
-                                    'opacity-80': !page.url || page.active
-                                }"
-                               v-on:click.prevent="loadWebsites(page.url)"
-                               v-html="page.label"
-                            ></a>
-                        </li>
-                    </ol>
-                </nav>
+                <jet-button
+                    @click="manageWebsiteAction(null)"
+                    v-if="isAdmin" :class="{ 'opacity-25': formProcessing }"
+                    :disabled="formProcessing">
+                    Add
+                </jet-button>
             </div>
+        </template>
+
+        <div v-if="websites.length > 0"
+             class="w-full sm:max-w-4xl mx-auto my-6 p-6 bg-white shadow-md break-words sm:rounded-lg">
+            <ul class="list-decimal ml-10">
+                <li v-for="data in websites" :key="data.id">
+                    <a href="#"
+                       class="text-[#6875F5]"
+                       @click="manageWebsiteAction(data.id)"
+                       v-if="isAdmin"
+                    >
+                        {{ data.address }}
+                    </a>
+                    <span v-else>{{ data.address }}</span>
+                </li>
+            </ul>
         </div>
-    </div>
+
+        <nav v-if="pages.length > 0" class="my-10">
+            <ol class="flex flex-wrap items-center justify-center">
+                <li v-for="page in pages" :key="page.label" class="p-4">
+                    <a :href="correctLink(page.url)"
+                       class="text-[#6875F5]"
+                       :class="{
+                            'pointer-events-none': !page.url || page.active,
+                            'opacity-80': !page.url || page.active
+                        }"
+                       v-on:click.prevent="loadWebsites(page.url)"
+                       v-html="page.label"
+                    ></a>
+                </li>
+            </ol>
+        </nav>
+    </app-layout>
 
     <jet-dialog-modal :show="modalActive" @close="modalActive = false">
         <template #title>
@@ -104,8 +87,7 @@
 
 <script>
     import { defineComponent } from 'vue'
-    import { Head, Link } from '@inertiajs/inertia-vue3';
-    import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo.vue'
+    import AppLayout from '@/Layouts/AppLayout.vue'
     import JetDialogModal from '@/Jetstream/DialogModal.vue'
     import JetButton from '@/Jetstream/Button.vue'
     import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue'
@@ -115,9 +97,7 @@
 
     export default defineComponent({
         components: {
-            Head,
-            Link,
-            JetAuthenticationCardLogo,
+            AppLayout,
             JetDialogModal,
             JetButton,
             JetSecondaryButton,

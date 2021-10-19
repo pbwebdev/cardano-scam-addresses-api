@@ -16,7 +16,7 @@
             </header>
 
             <!-- Page Content -->
-            <main>
+            <main class="px-6 md:py-6">
                 <slot></slot>
             </main>
         </div>

@@ -2,19 +2,7 @@
     <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}"
          class="sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <jet-responsive-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
-                Dashboard
-            </jet-responsive-nav-link>
-
-            <jet-responsive-nav-link :href="route('addresses')"
-                                     :active="route().current('addresses')">
-                Addresses
-            </jet-responsive-nav-link>
-
-            <jet-responsive-nav-link :href="route('websites')"
-                                     :active="route().current('websites')">
-                Websites
-            </jet-responsive-nav-link>
+            <slot></slot>
         </div>
 
         <!-- Responsive Settings Options -->

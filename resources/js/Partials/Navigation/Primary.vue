@@ -11,19 +11,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
-                        Dashboard
-                    </jet-nav-link>
-
-                    <jet-nav-link :href="route('addresses')"
-                                  :active="route().current('addresses')">
-                        Addresses
-                    </jet-nav-link>
-
-                    <jet-nav-link :href="route('websites')"
-                                  :active="route().current('websites')">
-                        Websites
-                    </jet-nav-link>
+                    <slot></slot>
                 </div>
             </div>
 
@@ -186,11 +174,11 @@
 
 <script>
     import { defineComponent } from 'vue'
+    import { Link } from '@inertiajs/inertia-vue3'
     import JetApplicationMark from '@/Jetstream/ApplicationMark.vue'
     import JetDropdown from '@/Jetstream/Dropdown.vue'
     import JetDropdownLink from '@/Jetstream/DropdownLink.vue'
     import JetNavLink from '@/Jetstream/NavLink.vue'
-    import { Head, Link } from '@inertiajs/inertia-vue3';
 
     export default defineComponent({
         props: {
@@ -198,7 +186,6 @@
         },
 
         components: {
-            Head,
             JetApplicationMark,
             JetDropdown,
             JetDropdownLink,
