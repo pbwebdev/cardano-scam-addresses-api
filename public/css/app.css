@@ -1231,11 +1231,11 @@ select {
 .mb-4 {
 	margin-bottom: 1rem;
 }
-.mb-2 {
-	margin-bottom: 0.5rem;
-}
 .-mt-px {
 	margin-top: -1px;
+}
+.mb-2 {
+	margin-bottom: 0.5rem;
 }
 .ml-10 {
 	margin-left: 2.5rem;
@@ -1339,14 +1339,14 @@ select {
 .w-20 {
 	width: 5rem;
 }
-.w-64 {
-	width: 16rem;
-}
 .w-72 {
 	width: 18rem;
 }
 .w-32 {
 	width: 8rem;
+}
+.w-64 {
+	width: 16rem;
 }
 .min-w-0 {
 	min-width: 0px;
@@ -1475,9 +1475,6 @@ select {
 .overflow-hidden {
 	overflow: hidden;
 }
-.overflow-x-auto {
-	overflow-x: auto;
-}
 .overflow-y-auto {
 	overflow-y: auto;
 }
@@ -1566,13 +1563,13 @@ select {
 	--tw-border-opacity: 1;
 	border-color: rgba(243, 244, 246, var(--tw-border-opacity));
 }
-.border-blue-400 {
-	--tw-border-opacity: 1;
-	border-color: rgba(96, 165, 250, var(--tw-border-opacity));
-}
 .border-gray-400 {
 	--tw-border-opacity: 1;
 	border-color: rgba(156, 163, 175, var(--tw-border-opacity));
+}
+.border-blue-400 {
+	--tw-border-opacity: 1;
+	border-color: rgba(96, 165, 250, var(--tw-border-opacity));
 }
 .bg-white {
 	--tw-bg-opacity: 1;
@@ -1754,11 +1751,11 @@ select {
 .pb-1 {
 	padding-bottom: 0.25rem;
 }
-.pl-4 {
-	padding-left: 1rem;
-}
 .pt-8 {
 	padding-top: 2rem;
+}
+.pl-4 {
+	padding-left: 1rem;
 }
 .text-left {
 	text-align: left;
@@ -1893,14 +1890,6 @@ select {
 	--tw-text-opacity: 1;
 	color: rgba(16, 185, 129, var(--tw-text-opacity));
 }
-.text-blue-400 {
-	--tw-text-opacity: 1;
-	color: rgba(96, 165, 250, var(--tw-text-opacity));
-}
-.text-red-400 {
-	--tw-text-opacity: 1;
-	color: rgba(248, 113, 113, var(--tw-text-opacity));
-}
 .text-gray-200 {
 	--tw-text-opacity: 1;
 	color: rgba(229, 231, 235, var(--tw-text-opacity));
@@ -1908,6 +1897,14 @@ select {
 .text-gray-300 {
 	--tw-text-opacity: 1;
 	color: rgba(209, 213, 219, var(--tw-text-opacity));
+}
+.text-red-400 {
+	--tw-text-opacity: 1;
+	color: rgba(248, 113, 113, var(--tw-text-opacity));
+}
+.text-blue-400 {
+	--tw-text-opacity: 1;
+	color: rgba(96, 165, 250, var(--tw-text-opacity));
 }
 .text-\[\#6875F5\] {
 	--tw-text-opacity: 1;
@@ -2370,11 +2367,6 @@ select {
 	.sm\:px-20 {
 		padding-left: 5rem;
 		padding-right: 5rem;
-	}
-
-	.sm\:py-6 {
-		padding-top: 1.5rem;
-		padding-bottom: 1.5rem;
 	}
 
 	.sm\:pt-0 {

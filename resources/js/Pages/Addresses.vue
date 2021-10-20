@@ -54,8 +54,10 @@
         </template>
 
         <template #content>
+            <p v-if="formMessage" class="mb-2 font-medium text-red-600">{{ formMessage }}</p>
             <jet-input type="text" class="w-full" v-model="fieldValue"
                        required autofocus />
+            <jet-input-error :message="fieldError" class="mt-2" />
         </template>
 
         <template #footer>
@@ -94,6 +96,8 @@
     import JetDangerButton from '@/Jetstream/DangerButton.vue'
     import JetInput from '@/Jetstream/Input.vue'
     import JetLabel from '@/Jetstream/Label.vue'
+    import JetInputError from '@/Jetstream/InputError.vue'
+    import JetFormErrors from '@/Jetstream/InputError.vue'
 
     export default defineComponent({
         components: {
@@ -104,6 +108,8 @@
             JetDangerButton,
             JetInput,
             JetLabel,
+            JetInputError,
+            JetFormErrors,
         },
 
         props: ['isAdmin'],
@@ -116,6 +122,8 @@
                 modalActive: false,
                 fieldValue: null,
                 formProcessing: false,
+                fieldError: '',
+                formMessage: '',
             }
         },
 
@@ -136,11 +144,12 @@
                 return url ? url.replace('/api', '') : `#`;
             },
 
-            resetData() {
-                this.managedId = null;
-                this.modalActive = false;
+            resetData(manageId = null, openModal = false) {
+                this.managedId = manageId;
+                this.modalActive = openModal;
                 this.fieldValue = null;
-                this.formProcessing = false;
+                this.formMessage = '';
+                this.fieldError = '';
             },
 
             loadAddresses(url) {
@@ -169,20 +178,21 @@
                     }
 
                     return data;
+                }).catch(error => {
+                    this.formMessage = error?.response?.data?.message || '';
+                    this.fieldError = error?.response?.data?.errors?.address[0] || '';
+                }).finally(() => {
+                    this.formProcessing = false;
                 });
             },
 
             manageAddressAction(id) {
-                this.managedId = id;
-                this.modalActive = true;
-                let changeValue = null;
+                this.resetData(id, true)
 
                 if (id) {
                     const index = this.addresses.findIndex(object => object.id === id);
-                    changeValue = this.addresses[index].address;
+                    this.fieldValue = this.addresses[index].address;
                 }
-
-                this.fieldValue = changeValue;
             },
 
             editAddressAction() {
@@ -204,6 +214,11 @@
                     }
 
                     return data;
+                }).catch(error => {
+                    this.formMessage = error?.response?.data?.message || '';
+                    this.fieldError = error?.response?.data?.errors?.address[0] || '';
+                }).finally(() => {
+                    this.formProcessing = false;
                 });
             },
 
@@ -219,6 +234,11 @@
                     this.addresses.splice(index, 1);
 
                     return data;
+                }).catch(error => {
+                    this.formMessage = error?.response?.data?.message || '';
+                    this.fieldError = error?.response?.data?.errors?.address[0] || '';
+                }).finally(() => {
+                    this.formProcessing = false;
                 });
             }
         }
