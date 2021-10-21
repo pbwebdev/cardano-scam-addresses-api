@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => ['api/*'],
+    'paths' => [config('app.api_url') ? '/*' : 'api/*'],
 
     'allowed_methods' => ['*'],
 
