@@ -21977,12 +21977,26 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   emits: ['loadItems'],
-  setup: function setup() {
+  setup: function setup(_, _ref) {
+    var emit = _ref.emit;
+
+    var getPageNumber = function getPageNumber(url) {
+      var apiUrl = new URL(url);
+      return apiUrl.searchParams.get('page');
+    };
+
     var correctLink = function correctLink(url) {
-      return url ? url.replace('/api', '') : "#";
+      if (!url) {
+        return '#';
+      }
+
+      var windowUrl = new URL(window.location);
+      windowUrl.searchParams.set('page', getPageNumber(url));
+      return windowUrl.toString();
     };
 
     return {
+      getPageNumber: getPageNumber,
       correctLink: correctLink
     };
   }
@@ -26325,7 +26339,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         'opacity-80': !page.url || page.active
       }]),
       onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
-        return _ctx.$emit('loadItems', page.url);
+        return _ctx.$emit('loadItems', _ctx.getPageNumber(page.url));
       }, ["prevent"]),
       innerHTML: page.label
     }, null, 10
@@ -27233,13 +27247,11 @@ function composableResource(routeBaseName) {
     state.fieldError = '';
   }
 
-  function loadData(url) {
-    if (!url) {
-      url = route("".concat(routeBaseName, ".index"), {
-        page: new URLSearchParams(window.location.search).get('page')
-      });
-    }
-
+  function loadData() {
+    var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+    var url = route("".concat(routeBaseName, ".index"), {
+      page: page
+    });
     var response = axios.get(url);
     response.then(function (data) {
       var _data$data, _data$data2;

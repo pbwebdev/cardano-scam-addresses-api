@@ -8,7 +8,7 @@
                             'pointer-events-none': !page.url || page.active,
                             'opacity-80': !page.url || page.active
                         }"
-                   @click.prevent="$emit('loadItems', page.url)"
+                   @click.prevent="$emit('loadItems', getPageNumber(page.url))"
                    v-html="page.label"
                 ></a>
             </li>
@@ -31,12 +31,27 @@
             'loadItems',
         ],
 
-        setup() {
+        setup(_, {emit}) {
+            const getPageNumber = url => {
+                const apiUrl = new URL(url);
+
+                return apiUrl.searchParams.get('page');
+            }
+
             const correctLink = url => {
-                return url ? url.replace('/api', '') : `#`;
+                if (!url) {
+                    return '#';
+                }
+
+                const windowUrl = new URL(window.location);
+
+                windowUrl.searchParams.set('page', getPageNumber(url))
+
+                return windowUrl.toString();
             };
 
             return {
+                getPageNumber,
                 correctLink,
             }
         },

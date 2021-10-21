@@ -29,12 +29,10 @@ export default function composableResource(routeBaseName) {
         state.fieldError = '';
     }
 
-    function loadData(url) {
-        if (!url) {
-            url = route(`${routeBaseName}.index`, {
-                page: new URLSearchParams(window.location.search).get('page')
-            })
-        }
+    function loadData(page = 1) {
+        const url = route(`${routeBaseName}.index`, {
+            page,
+        })
 
         const response = axios.get(url);
 
