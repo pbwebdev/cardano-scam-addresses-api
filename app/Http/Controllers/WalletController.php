@@ -64,7 +64,7 @@ class WalletController extends Controller
     {
         $data = new WalletCollection(Wallet::paginate(request('per_page', 100)));
 
-        return $data->response();
+        return $data->preserveQuery()->response();
     }
 
     /**

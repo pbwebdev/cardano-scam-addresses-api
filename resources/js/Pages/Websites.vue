@@ -6,6 +6,8 @@
                     Websites
                 </h1>
 
+                <resource-pager @reloadItems="loadSize"></resource-pager>
+
                 <jet-button
                     @click="addItem"
                     v-if="$page.props.isAdmin"
@@ -23,21 +25,25 @@
     import { defineComponent, ref } from 'vue'
     import AppLayout from '@/Layouts/AppLayout.vue'
     import ResourceData from '@/Partials/Data'
+    import ResourcePager from '@/Partials/Data/Pager'
     import JetButton from "@/Jetstream/Button";
 
     export default defineComponent({
         components: {
             AppLayout,
             ResourceData,
+            ResourcePager,
             JetButton,
         },
 
         setup() {
             const resourceData = ref(null);
             const addItem = () => resourceData.value.manageAction(0);
+            const loadSize = per_page => resourceData.value.loadData(1, per_page);
 
             return {
                 addItem,
+                loadSize,
                 resourceData,
             }
         },

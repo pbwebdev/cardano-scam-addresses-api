@@ -27,7 +27,7 @@ class WebsiteController extends Controller
     {
         $data = new WebsiteCollection(Website::paginate(request('per_page', 100)));
 
-        return $data->response();
+        return $data->preserveQuery()->response();
     }
 
     /**

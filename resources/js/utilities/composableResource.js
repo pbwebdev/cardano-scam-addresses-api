@@ -1,4 +1,5 @@
 import { reactive } from 'vue'
+import { defaultPager } from "@/utilities/pageHelpers";
 
 export default function composableResource(routeBaseName) {
     const state = reactive({
@@ -29,9 +30,10 @@ export default function composableResource(routeBaseName) {
         state.fieldError = '';
     }
 
-    function loadData(page = 1) {
+    function loadData(page = 1, per_page = defaultPager) {
         const url = route(`${routeBaseName}.index`, {
             page,
+            per_page,
         })
 
         const response = axios.get(url);
