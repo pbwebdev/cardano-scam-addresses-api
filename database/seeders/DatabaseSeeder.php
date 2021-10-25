@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             WalletSeeder::class,
             WebsiteSeeder::class,
+            SubmissionSeeder::class,
         ]);
     }
 }
