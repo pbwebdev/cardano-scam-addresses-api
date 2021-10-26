@@ -2,9 +2,10 @@
 
 namespace App;
 
+use App\Interfaces\CardanoServiceProvider;
 use App\Oauth2\BlockfrostClient;
 
-class Blockfrost
+class Blockfrost implements CardanoServiceProvider
 {
     /**
      * @var BlockfrostClient
@@ -37,5 +38,23 @@ class Blockfrost
         $data = $response->getData(true);
 
         return $data['stake_address'];
+    }
+
+    /**
+     * Get the inputs and outputs of specific transaction
+     *
+     * @param $hash
+     *
+     * @return array
+     */
+    public function getTransactionDetails($hash): array
+    {
+        $response = $this->client->request('txs/' . $hash . '/utxos');
+
+        if ($response->isClientError()) {
+            return [];
+        }
+
+        return $response->getData(true);
     }
 }

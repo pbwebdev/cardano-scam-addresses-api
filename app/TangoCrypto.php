@@ -2,9 +2,10 @@
 
 namespace App;
 
+use App\Interfaces\CardanoServiceProvider;
 use App\Oauth2\TangoCryptoClient;
 
-class TangoCrypto
+class TangoCrypto implements CardanoServiceProvider
 {
     /**
      * @var TangoCryptoClient
@@ -37,5 +38,23 @@ class TangoCrypto
         $data = $response->getData(true);
 
         return $data['stake_address'];
+    }
+
+    /**
+     * Get the inputs and outputs of specific transaction
+     *
+     * @param $hash
+     *
+     * @return array
+     */
+    public function getTransactionDetails($hash): array
+    {
+        $response = $this->client->request('transactions/' . $hash . '/utxos');
+
+        if ($response->isClientError()) {
+            return [];
+        }
+
+        return $response->getData(true);
     }
 }
