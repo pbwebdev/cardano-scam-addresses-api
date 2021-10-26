@@ -6,10 +6,25 @@ use App\Http\Requests\SubmissionRequest;
 use App\Http\Resources\SubmissionCollection;
 use App\Http\Resources\SubmissionResource;
 use App\Models\Submission;
+use App\Traits\Serviceable;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\JsonResponse;
 
 class SubmissionController extends Controller
 {
+    use Serviceable;
+
+    /**
+     * Create a new Wallet controller instance
+     * @throws BindingResolutionException
+     */
+    public function __construct()
+    {
+        $this->middleware('can:administrate')->only(['update', 'destroy']);
+
+        $this->setServiceProvider();
+    }
+
     /**
      * Display a listing of the resource.
      *

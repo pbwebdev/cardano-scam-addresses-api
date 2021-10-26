@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Blockfrost;
 use App\Exceptions\InvalidAddressException;
 use App\Http\Requests\WalletRequest;
 use App\Http\Resources\WalletCollection;
@@ -10,22 +9,15 @@ use App\Http\Resources\WalletResource;
 use App\Models\Wallet;
 use App\Rules\Bech32Address;
 use App\Rules\CardanoAddress;
-use App\TangoCrypto;
+use App\Traits\Serviceable;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 
 class WalletController extends Controller
 {
-    public const SERVICE_PROVIDER = [
-        'blockfrost'  => Blockfrost::class,
-        'tangocrypto' => TangoCrypto::class,
-    ];
+    use Serviceable;
 
-    /**
-     * @var Blockfrost|TangoCrypto
-     */
-    private $serviceProvider;
     /**
      * @var CardanoAddress
      */
@@ -42,17 +34,6 @@ class WalletController extends Controller
         $this->setServiceProvider();
 
         $this->cardanoAddress = new CardanoAddress();
-    }
-
-    private function setServiceProvider()
-    {
-        $serviceProvider = config('services.cardano.service_provider');
-
-        if (! array_key_exists($serviceProvider, self::SERVICE_PROVIDER)) {
-            $serviceProvider = 'blockfrost';
-        }
-
-        $this->serviceProvider = app()->make(self::SERVICE_PROVIDER[$serviceProvider]);
     }
 
     /**
