@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\TransactionHash;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SubmissionRequest extends FormRequest
@@ -34,6 +35,8 @@ class SubmissionRequest extends FormRequest
             'transaction' => [
                 'required',
                 'string',
+                'unique:submissions',
+                new TransactionHash(),
             ],
             'description' => [
                 'required',
