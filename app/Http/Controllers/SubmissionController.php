@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\TransactionNotFoundException;
 use App\Http\Requests\SubmissionRequest;
 use App\Http\Resources\SubmissionCollection;
 use App\Http\Resources\SubmissionResource;
@@ -48,6 +49,10 @@ class SubmissionController extends Controller
     {
         $data = $request->validated();
 
+        if (! $this->serviceProvider->getTransactionDetails($data['transaction'])) {
+            throw new TransactionNotFoundException();
+        }
+
         $submission = Submission::create($data);
 
         $resource = new SubmissionResource($submission);
@@ -80,6 +85,10 @@ class SubmissionController extends Controller
     public function update(SubmissionRequest $request, Submission $submission): JsonResponse
     {
         $data = $request->validated();
+
+        if (! $this->serviceProvider->getTransactionDetails($data['transaction'])) {
+            throw new TransactionNotFoundException();
+        }
 
         $submission->update($data);
 

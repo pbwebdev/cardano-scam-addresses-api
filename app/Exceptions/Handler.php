@@ -65,6 +65,8 @@ class Handler extends ExceptionHandler
                 $response->setData(['message' => 'Requested resource was not found.']);
             } elseif ($e instanceof InvalidAddressException) {
                 $response->setData(['message' => 'Requested address was not valid to the network.']);
+            } elseif ($e instanceof TransactionNotFoundException) {
+                $response->setData(['message' => 'Requested transaction was not found in the network.']);
             }
 
             $response = new JsonResponse(
