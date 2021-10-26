@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Submission extends Model
 {
@@ -13,9 +12,4 @@ class Submission extends Model
     protected $fillable = [
         'content',
     ];
-
-    public function submittable(): MorphTo
-    {
-        return $this->morphTo();
-    }
 }
