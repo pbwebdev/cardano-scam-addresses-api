@@ -31,10 +31,14 @@ class SubmissionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => [
+            'transaction' => [
                 'required',
                 'string',
-            ]
+            ],
+            'description' => [
+                'required',
+                'string',
+            ],
         ];
     }
 }

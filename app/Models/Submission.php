@@ -10,6 +10,7 @@ class Submission extends Model
     use HasFactory;
 
     protected $fillable = [
-        'content',
+        'transaction',
+        'description',
     ];
 }

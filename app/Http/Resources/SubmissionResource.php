@@ -24,8 +24,9 @@ class SubmissionResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id'      => $this->resource->getAttributeValue('id'),
-            'content' => $this->resource->getAttributeValue('content'),
+            'id'          => $this->resource->getAttributeValue('id'),
+            'transaction' => $this->resource->getAttributeValue('transaction'),
+            'description' => $this->resource->getAttributeValue('description'),
         ];
     }
 }
