@@ -13,6 +13,7 @@ use App\Traits\Serviceable;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class WalletController extends Controller
 {
@@ -54,6 +55,7 @@ class WalletController extends Controller
      * @param  WalletRequest  $request
      *
      * @return JsonResponse
+     * @throws ValidationException
      */
     public function store(WalletRequest $request): JsonResponse
     {
@@ -77,6 +79,7 @@ class WalletController extends Controller
      * @param  string  $key
      *
      * @return JsonResponse
+     * @throws ValidationException
      */
     public function show(string $key): JsonResponse
     {
