@@ -59,8 +59,19 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e): Response
     {
         $response = parent::render($request, $e);
+        $apiUrl = config('app.api_url');
+        $apiRoute = [
+            'prefix' => $apiUrl ? '' : 'api',
+            'domain' => $apiUrl,
+        ];
 
-        if ($request->route() && 'api' === $request->route()->getPrefix()) {
+        if (
+            $request->route() &&
+            (
+                $apiRoute['domain'] === $request->route()->getDomain() ||
+                $apiRoute['prefix'] === $request->route()->getPrefix()
+            )
+        ) {
             if ($e instanceof ModelNotFoundException) {
                 $response->setData(['message' => 'Requested resource was not found.']);
             } elseif ($e instanceof InvalidAddressException) {
