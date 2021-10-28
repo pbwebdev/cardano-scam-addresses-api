@@ -28,6 +28,7 @@ class SubmissionResource extends JsonResource
             'id'          => $this->resource->getAttributeValue('id'),
             'transaction' => $this->resource->getAttributeValue('transaction'),
             'description' => $this->resource->getAttributeValue('description'),
+            'status'      => $this->resource->getAttributeValue('status'),
         ];
     }
 }
