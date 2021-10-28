@@ -9,7 +9,7 @@ export default function composableResource(routeBaseName) {
         modalActive: false,
         fieldValue: null,
         formProcessing: false,
-        fieldError: '',
+        fieldErrors: [],
         formMessage: '',
     });
 
@@ -27,7 +27,7 @@ export default function composableResource(routeBaseName) {
         state.managedId = manageId;
         state.fieldValue = null;
         state.formMessage = '';
-        state.fieldError = '';
+        state.fieldErrors = [];
     }
 
     function loadData(page = 1, per_page = defaultPager) {
@@ -63,7 +63,7 @@ export default function composableResource(routeBaseName) {
             return data;
         }).catch(error => {
             state.formMessage = error?.response?.data?.message || '';
-            state.fieldError = error?.response?.data?.errors?.address[0] || '';
+            state.fieldErrors = error?.response?.data?.errors.address || [];
         }).finally(() => {
             state.formProcessing = false;
         });
@@ -99,7 +99,7 @@ export default function composableResource(routeBaseName) {
             return data;
         }).catch(error => {
             state.formMessage = error?.response?.data?.message || '';
-            state.fieldError = error?.response?.data?.errors?.address[0] || '';
+            state.fieldErrors = error?.response?.data?.errors.address || [];
         }).finally(() => {
             state.formProcessing = false;
         });
@@ -119,7 +119,7 @@ export default function composableResource(routeBaseName) {
             return data;
         }).catch(error => {
             state.formMessage = error?.response?.data?.message || '';
-            state.fieldError = error?.response?.data?.errors?.address[0] || '';
+            state.fieldErrors = error?.response?.data?.errors.address || [];
         }).finally(() => {
             state.formProcessing = false;
         });

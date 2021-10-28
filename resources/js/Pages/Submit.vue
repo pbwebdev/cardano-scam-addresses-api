@@ -21,14 +21,16 @@
                         <jet-label for="transaction" value="Transaction Hash" />
                         <jet-input id="transaction" type="text" class="mt-1 block w-full"
                                    v-model="formData.inputs.transaction" autofocus />
-                        <jet-input-error :message="formData.errors.transaction" class="mt-2" />
+                        <jet-input-error v-for="(error, index) in formData.errors.transaction" :key="index"
+                                         :message="error" class="mt-2" />
                     </div>
 
                     <div class="col-span-6">
                         <jet-label for="description" value="Description" />
                         <jet-textarea id="description" class="mt-1 block w-full" rows="6"
                                       v-model="formData.inputs.description" autofocus />
-                        <jet-input-error :message="formData.errors.description" class="mt-2" />
+                        <jet-input-error v-for="(error, index) in formData.errors.description" :key="index"
+                                         :message="error" class="mt-2" />
                     </div>
                 </template>
 

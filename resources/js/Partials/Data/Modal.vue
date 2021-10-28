@@ -16,7 +16,8 @@
                        required autofocus
             />
 
-            <jet-input-error :message="formData.fieldError" class="mt-2" />
+            <jet-input-error v-for="(error, index) in formData.fieldErrors" :key="index" :message="error"
+                             class="mt-2" />
         </template>
 
         <template #footer>

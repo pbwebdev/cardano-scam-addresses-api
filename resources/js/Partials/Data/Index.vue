@@ -15,7 +15,7 @@
             validationMessage: state.formMessage,
             isProcessing: state.formProcessing,
             fieldValue: state.fieldValue,
-            fieldError: state.fieldError,
+            fieldErrors: state.fieldErrors,
         }"
         :is-active="state.modalActive"
         :managed-id="state.managedId"
