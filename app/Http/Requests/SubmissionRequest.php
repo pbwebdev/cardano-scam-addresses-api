@@ -45,6 +45,7 @@ class SubmissionRequest extends FormRequest
                 'string',
             ],
             'status'      => [
+                'sometimes',
                 'required',
                 'string',
                 Rule::in(Submission::STATUS_NAMES),

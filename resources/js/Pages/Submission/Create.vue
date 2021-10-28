@@ -93,21 +93,17 @@
             });
 
             const resetData = () => {
-                formData.inputs = {
-                    transaction: null,
-                    description: null,
-                };
                 formData.errors = {
                     transaction: null,
                     description: null,
                 };
                 formData.validationMessage = null;
                 formData.recentlySuccessful = false;
-                formData.processing = false;
             }
 
             const pushSubmission = () => {
-                formData.formProcessing = true;
+                resetData();
+                formData.processing = true;
 
                 const response = axios.post(route(`submissions.index`), {
                     transaction: formData.inputs.transaction,
@@ -115,7 +111,10 @@
                 });
 
                 response.then(data => {
-                    resetData();
+                    formData.inputs = {
+                        transaction: null,
+                        description: null,
+                    };
 
                     formData.recentlySuccessful = true;
 
@@ -133,7 +132,7 @@
                         formData.errors = errors;
                     }
                 }).finally(() => {
-                    formData.formProcessing = false;
+                    formData.processing = false;
                 });
             };
 

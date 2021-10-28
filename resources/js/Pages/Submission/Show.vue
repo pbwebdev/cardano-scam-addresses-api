@@ -115,8 +115,18 @@
                 processing: false,
             });
 
+            const resetData = () => {
+                formData.errors = {
+                    transaction: null,
+                    description: null,
+                };
+                formData.validationMessage = null;
+                formData.recentlySuccessful = false;
+            }
+
             const updateSubmission = () => {
-                formData.formProcessing = true;
+                resetData();
+                formData.processing = true;
 
                 const response = axios.patch(route(`submissions.update`, props.submission.id), {
                     transaction: props.submission.transaction,
@@ -141,7 +151,7 @@
                         formData.errors = errors;
                     }
                 }).finally(() => {
-                    formData.formProcessing = false;
+                    formData.processing = false;
                 });
             };
 

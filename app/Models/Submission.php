@@ -23,6 +23,6 @@ class Submission extends Model
 
     public function getStatusAttribute($value)
     {
-        return self::STATUS_NAMES[$value];
+        return self::STATUS_NAMES[$value ?? 0];
     }
 }
