@@ -45,6 +45,7 @@
                     dashboard: 'Dashboard',
                     addresses: 'Addresses',
                     websites: 'Websites',
+                    submissions: 'Submissions',
                 }
             }
         },

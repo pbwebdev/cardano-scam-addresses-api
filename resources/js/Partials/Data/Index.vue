@@ -10,6 +10,7 @@
     />
 
     <data-modal
+        v-if="!noModal"
         :title="modalTitle"
         :form-data="{
             validationMessage: state.formMessage,
@@ -52,6 +53,9 @@
                 type: String,
                 required: true,
             },
+            noModal: {
+                type: Boolean,
+            }
         },
 
         setup(props) {
