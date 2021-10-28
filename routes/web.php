@@ -23,11 +23,14 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::inertia('/addresses', 'Addresses')->name('addresses');
 Route::inertia('/websites', 'Websites')->name('websites');
-Route::inertia('/submit', 'Submit')->name('submit');
-Route::inertia('/submissions', 'Submissions')->name('submissions');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/submissions/{submission}', function (Submission $submission) {
-    $statusNames = Submission::STATUS_NAMES;
+Route::prefix('submissions')->name('submissions')->group(function () {
+    Route::inertia('/', 'Submission/Index');
+    Route::inertia('/create', 'Submission/Create')->name('.create');
 
-    return Inertia::render('Submission/Show', compact('submission', 'statusNames'));
-})->name('submissions.show');
+    Route::middleware(['auth:sanctum', 'verified'])->get('/{submission}', function (Submission $submission) {
+        $statusNames = Submission::STATUS_NAMES;
+
+        return Inertia::render('Submission/Show', compact('submission', 'statusNames'));
+    })->name('.show');
+});
