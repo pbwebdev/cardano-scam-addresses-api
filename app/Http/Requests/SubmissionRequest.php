@@ -37,7 +37,7 @@ class SubmissionRequest extends FormRequest
             'transaction' => [
                 'required',
                 'string',
-                'unique:submissions',
+                Rule::unique('submissions')->ignore($this->get('transaction'), 'transaction'),
                 new TransactionHash(),
             ],
             'description' => [

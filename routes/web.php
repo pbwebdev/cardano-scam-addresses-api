@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Submission;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -24,3 +25,9 @@ Route::inertia('/addresses', 'Addresses')->name('addresses');
 Route::inertia('/websites', 'Websites')->name('websites');
 Route::inertia('/submit', 'Submit')->name('submit');
 Route::inertia('/submissions', 'Submissions')->name('submissions');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/submissions/{submission}', function (Submission $submission) {
+    $statusNames = Submission::STATUS_NAMES;
+
+    return Inertia::render('Submission/Show', compact('submission', 'statusNames'));
+})->name('submissions.show');
