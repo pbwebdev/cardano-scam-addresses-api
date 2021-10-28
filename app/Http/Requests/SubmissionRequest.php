@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Submission;
 use App\Rules\TransactionHash;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SubmissionRequest extends FormRequest
 {
@@ -41,6 +43,11 @@ class SubmissionRequest extends FormRequest
             'description' => [
                 'required',
                 'string',
+            ],
+            'status'      => [
+                'required',
+                'string',
+                Rule::in(Submission::STATUS_NAMES),
             ],
         ];
     }

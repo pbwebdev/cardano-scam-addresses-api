@@ -90,6 +90,8 @@ class SubmissionController extends Controller
             throw new TransactionNotFoundException();
         }
 
+        $data['status'] = array_search($data['status'], Submission::STATUS_NAMES, true);
+
         $submission->update($data);
 
         $resource = new SubmissionResource($submission);

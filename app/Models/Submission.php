@@ -9,6 +9,12 @@ class Submission extends Model
 {
     use HasFactory;
 
+    public const STATUS_NAMES = [
+        0 => 'unmarked',
+        1 => 'accepted',
+        2 => 'declined',
+    ];
+
     protected $fillable = [
         'transaction',
         'description',
@@ -17,12 +23,6 @@ class Submission extends Model
 
     public function getStatusAttribute($value)
     {
-        $names = [
-            0 => 'unmarked',
-            1 => 'accepted',
-            2 => 'declined',
-        ];
-
-        return $names[$value];
+        return self::STATUS_NAMES[$value];
     }
 }
