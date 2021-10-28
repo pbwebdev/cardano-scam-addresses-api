@@ -22078,6 +22078,9 @@ __webpack_require__.r(__webpack_exports__);
     items: {
       type: Array,
       required: true
+    },
+    customKey: {
+      type: String
     }
   },
   emits: ['manageItem']
@@ -22266,6 +22269,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     noModal: {
       type: Boolean
+    },
+    customKey: {
+      type: String
     }
   },
   setup: function setup(props) {
@@ -26284,7 +26290,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         ref: "resourceData",
         routeBaseName: "submissions",
         headingTitle: "Submission",
-        noModal: ""
+        noModal: "",
+        customKey: "transaction"
       }, null, 512
       /* NEED_PATCH */
       )];
@@ -26665,9 +26672,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return _ctx.$emit('manageItem', item.id);
       }
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.address), 9
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.customKey ? item[_ctx.customKey] : item.address), 9
     /* TEXT, PROPS */
-    , _hoisted_3)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.address), 1
+    , _hoisted_3)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.customKey ? item[_ctx.customKey] : item.address), 1
     /* TEXT */
     ))]);
   }), 128
@@ -26937,10 +26944,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_data_listing, {
     items: _ctx.state.items,
+    customKey: _ctx.customKey,
     onManageItem: _ctx.manageAction
   }, null, 8
   /* PROPS */
-  , ["items", "onManageItem"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_data_pagination, {
+  , ["items", "customKey", "onManageItem"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_data_pagination, {
     pages: _ctx.state.pages,
     onLoadItems: _ctx.loadData
   }, null, 8

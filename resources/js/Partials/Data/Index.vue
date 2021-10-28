@@ -1,6 +1,7 @@
 <template>
     <data-listing
         :items="state.items"
+        :customKey="customKey"
         @manageItem="manageAction"
     />
 
@@ -55,6 +56,9 @@
             },
             noModal: {
                 type: Boolean,
+            },
+            customKey: {
+                type: String,
             }
         },
 

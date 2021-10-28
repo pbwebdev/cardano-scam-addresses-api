@@ -15,7 +15,8 @@
             </div>
         </template>
 
-        <resource-data ref="resourceData" routeBaseName="submissions" headingTitle="Submission" noModal />
+        <resource-data ref="resourceData" routeBaseName="submissions" headingTitle="Submission" noModal
+                       customKey="transaction" />
     </app-layout>
 </template>
 
