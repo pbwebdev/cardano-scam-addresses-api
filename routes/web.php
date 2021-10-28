@@ -22,3 +22,4 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::inertia('/addresses', 'Addresses')->name('addresses');
 Route::inertia('/websites', 'Websites')->name('websites');
+Route::inertia('/submit', 'Submit')->name('submit');
