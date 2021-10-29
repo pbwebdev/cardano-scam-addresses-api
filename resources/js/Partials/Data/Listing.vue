@@ -8,9 +8,9 @@
                    @click="$emit('manageItem', item.id)"
                    v-if="$page.props.isAdmin"
                 >
-                    {{ customKey ? item[customKey] : item.address }}
+                    {{ item.address }}
                 </a>
-                <span v-else>{{ customKey ? item[customKey] : item.address }}</span>
+                <span v-else>{{ item.address }}</span>
             </li>
         </ul>
     </div>
@@ -25,9 +25,6 @@
                 type: Array,
                 required: true,
             },
-            customKey: {
-                type: String,
-            }
         },
 
         emits: [

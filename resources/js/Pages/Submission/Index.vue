@@ -15,35 +15,58 @@
             </div>
         </template>
 
-        <resource-data ref="resourceData" routeBaseName="submissions" headingTitle="Submission" noModal
-                       customKey="transaction" />
+        <div v-if="state.items.length > 0"
+             class="w-full sm:max-w-4xl mx-auto my-6 p-6 bg-white shadow-md break-words sm:rounded-lg">
+            <ul class="list-decimal ml-10">
+                <li v-for="item in state.items" :key="item.id">
+                    <Link :href="route(`submissions.show`, item.id)"
+                          class="text-[#6875F5]"
+                    >
+                        {{ item.transaction }}
+                    </Link>
+                </li>
+            </ul>
+        </div>
+
+        <resource-pagination
+            :pages="state.pages"
+            @loadItems="loadData"
+        />
     </app-layout>
 </template>
 
 <script>
-    import { defineComponent, ref } from 'vue'
+    import { defineComponent, onMounted } from 'vue'
     import AppLayout from '@/Layouts/AppLayout.vue'
-    import ResourceData from '@/Partials/Data'
+    import ResourcePagination from '@/Partials/Data/Pagination'
     import ResourcePager from '@/Partials/Data/Pager'
     import { Link } from '@inertiajs/inertia-vue3';
+    import composableResource from "@/utilities/composableResource";
 
     export default defineComponent({
         components: {
             AppLayout,
-            ResourceData,
+            ResourcePagination,
             ResourcePager,
             Link,
         },
 
         setup() {
-            const resourceData = ref(null);
-            const addItem = () => resourceData.value.manageAction(0);
-            const loadSize = per_page => resourceData.value.loadData(1, per_page);
+            const {
+                state,
+                loadData,
+            } = composableResource('submissions')
+
+            const loadSize = per_page => loadData(1, per_page);
+
+            onMounted(() => {
+                loadData();
+            })
 
             return {
-                addItem,
+                state,
+                loadData,
                 loadSize,
-                resourceData,
             }
         },
     })

@@ -1,7 +1,6 @@
 <template>
     <data-listing
         :items="state.items"
-        :customKey="customKey"
         @manageItem="manageAction"
     />
 
@@ -11,7 +10,6 @@
     />
 
     <data-modal
-        v-if="!noModal"
         :title="modalTitle"
         :form-data="{
             validationMessage: state.formMessage,
@@ -54,12 +52,6 @@
                 type: String,
                 required: true,
             },
-            noModal: {
-                type: Boolean,
-            },
-            customKey: {
-                type: String,
-            }
         },
 
         setup(props) {

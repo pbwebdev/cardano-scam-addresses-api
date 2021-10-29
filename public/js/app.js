@@ -21924,9 +21924,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 /* harmony import */ var _Layouts_AppLayout_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Layouts/AppLayout.vue */ "./resources/js/Layouts/AppLayout.vue");
-/* harmony import */ var _Partials_Data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Partials/Data */ "./resources/js/Partials/Data/index.vue");
+/* harmony import */ var _Partials_Data_Pagination__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Partials/Data/Pagination */ "./resources/js/Partials/Data/Pagination.vue");
 /* harmony import */ var _Partials_Data_Pager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/Partials/Data/Pager */ "./resources/js/Partials/Data/Pager.vue");
 /* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
+/* harmony import */ var _utilities_composableResource__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/utilities/composableResource */ "./resources/js/utilities/composableResource.js");
+
 
 
 
@@ -21935,25 +21937,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
   components: {
     AppLayout: _Layouts_AppLayout_vue__WEBPACK_IMPORTED_MODULE_1__.default,
-    ResourceData: _Partials_Data__WEBPACK_IMPORTED_MODULE_2__.default,
+    ResourcePagination: _Partials_Data_Pagination__WEBPACK_IMPORTED_MODULE_2__.default,
     ResourcePager: _Partials_Data_Pager__WEBPACK_IMPORTED_MODULE_3__.default,
     Link: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_4__.Link
   },
   setup: function setup() {
-    var resourceData = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(null);
-
-    var addItem = function addItem() {
-      return resourceData.value.manageAction(0);
-    };
+    var _composableResource = (0,_utilities_composableResource__WEBPACK_IMPORTED_MODULE_5__.default)('submissions'),
+        state = _composableResource.state,
+        loadData = _composableResource.loadData;
 
     var loadSize = function loadSize(per_page) {
-      return resourceData.value.loadData(1, per_page);
+      return loadData(1, per_page);
     };
 
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(function () {
+      loadData();
+    });
     return {
-      addItem: addItem,
-      loadSize: loadSize,
-      resourceData: resourceData
+      state: state,
+      loadData: loadData,
+      loadSize: loadSize
     };
   }
 }));
@@ -22193,9 +22196,6 @@ __webpack_require__.r(__webpack_exports__);
     items: {
       type: Array,
       required: true
-    },
-    customKey: {
-      type: String
     }
   },
   emits: ['manageItem']
@@ -22381,12 +22381,6 @@ __webpack_require__.r(__webpack_exports__);
     headingTitle: {
       type: String,
       required: true
-    },
-    noModal: {
-      type: Boolean
-    },
-    customKey: {
-      type: String
     }
   },
   setup: function setup(props) {
@@ -26550,12 +26544,19 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 
 var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Add ");
 
+var _hoisted_4 = {
+  key: 0,
+  "class": "w-full sm:max-w-4xl mx-auto my-6 p-6 bg-white shadow-md break-words sm:rounded-lg"
+};
+var _hoisted_5 = {
+  "class": "list-decimal ml-10"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_resource_pager = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("resource-pager");
 
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
-  var _component_resource_data = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("resource-data");
+  var _component_resource_pagination = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("resource-pagination");
 
   var _component_app_layout = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("app-layout");
 
@@ -26582,15 +26583,32 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["href"])])];
     }),
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_resource_data, {
-        ref: "resourceData",
-        routeBaseName: "submissions",
-        headingTitle: "Submission",
-        noModal: "",
-        customKey: "transaction"
-      }, null, 512
-      /* NEED_PATCH */
-      )];
+      return [_ctx.state.items.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_5, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.state.items, function (item) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
+          key: item.id
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+          href: _ctx.route("submissions.show", item.id),
+          "class": "text-[#6875F5]"
+        }, {
+          "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+            return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.transaction), 1
+            /* TEXT */
+            )];
+          }),
+          _: 2
+          /* DYNAMIC */
+
+        }, 1032
+        /* PROPS, DYNAMIC_SLOTS */
+        , ["href"])]);
+      }), 128
+      /* KEYED_FRAGMENT */
+      ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_resource_pagination, {
+        pages: _ctx.state.pages,
+        onLoadItems: _ctx.loadData
+      }, null, 8
+      /* PROPS */
+      , ["pages", "onLoadItems"])];
     }),
     _: 1
     /* STABLE */
@@ -27022,9 +27040,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return _ctx.$emit('manageItem', item.id);
       }
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.customKey ? item[_ctx.customKey] : item.address), 9
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.address), 9
     /* TEXT, PROPS */
-    , _hoisted_3)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.customKey ? item[_ctx.customKey] : item.address), 1
+    , _hoisted_3)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.address), 1
     /* TEXT */
     ))]);
   }), 128
@@ -27294,17 +27312,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_data_listing, {
     items: _ctx.state.items,
-    customKey: _ctx.customKey,
     onManageItem: _ctx.manageAction
   }, null, 8
   /* PROPS */
-  , ["items", "customKey", "onManageItem"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_data_pagination, {
+  , ["items", "onManageItem"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_data_pagination, {
     pages: _ctx.state.pages,
     onLoadItems: _ctx.loadData
   }, null, 8
   /* PROPS */
-  , ["pages", "onLoadItems"]), !_ctx.noModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_data_modal, {
-    key: 0,
+  , ["pages", "onLoadItems"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_data_modal, {
     title: _ctx.modalTitle,
     "form-data": {
       validationMessage: _ctx.state.formMessage,
@@ -27321,7 +27337,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onRemoveItem: _ctx.removeAction
   }, null, 8
   /* PROPS */
-  , ["title", "form-data", "is-active", "managed-id", "onToggleStatus", "onUpdateFieldValue", "onCreateItem", "onEditItem", "onRemoveItem"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64
+  , ["title", "form-data", "is-active", "managed-id", "onToggleStatus", "onUpdateFieldValue", "onCreateItem", "onEditItem", "onRemoveItem"])], 64
   /* STABLE_FRAGMENT */
   );
 }
