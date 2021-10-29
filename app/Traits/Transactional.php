@@ -50,7 +50,7 @@ trait Transactional
         }
 
         if (1 === count($receivers)) {
-            return $receivers;
+            return [array_key_first($receivers)];
         }
 
         return array_diff(array_keys($receivers), array_keys($senders));

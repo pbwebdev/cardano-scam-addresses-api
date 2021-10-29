@@ -1240,9 +1240,6 @@ select {
 .ml-10 {
 	margin-left: 2.5rem;
 }
-.mr-auto {
-	margin-right: auto;
-}
 .block {
 	display: block;
 }
@@ -2419,12 +2416,6 @@ select {
 
 	.md\:gap-6 {
 		gap: 1.5rem;
-	}
-
-	.md\:space-x-6 > :not([hidden]) ~ :not([hidden]) {
-		--tw-space-x-reverse: 0;
-		margin-right: calc(1.5rem * var(--tw-space-x-reverse));
-		margin-left: calc(1.5rem * calc(1 - var(--tw-space-x-reverse)));
 	}
 
 	.md\:border-t-0 {

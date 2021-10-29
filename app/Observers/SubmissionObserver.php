@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Submission;
+use App\Models\Wallet;
 use App\Traits\Transactional;
 use Illuminate\Contracts\Container\BindingResolutionException;
 
@@ -20,11 +21,17 @@ class SubmissionObserver
      */
     public function updated(Submission $submission): void
     {
+        if ('accepted' !== $submission->getAttribute('status')) {
+            return;
+        }
+
         $this->setServiceProvider();
 
         $transactionDetails = $this->getTransactionDetails($submission->getAttribute('transaction'));
         $stakeAddresses = $this->getStakeAddresses($transactionDetails);
 
-        logger($stakeAddresses);
+        foreach ($stakeAddresses['suspects'] as $address) {
+            Wallet::updateOrCreate(compact('address'));
+        }
     }
 }
