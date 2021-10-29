@@ -37,7 +37,7 @@ class Blockfrost implements CardanoServiceProvider
 
         $data = $response->getData(true);
 
-        return $data['stake_address'];
+        return $data['stake_address'] ?? '';
     }
 
     /**
