@@ -26638,12 +26638,12 @@ var _hoisted_7 = {
   "class": "col-span-6"
 };
 var _hoisted_8 = {
-  "class": "mt-2 grid grid-cols-1 md:grid-cols-2 gap-4"
+  "class": "mt-2 grid grid-cols-1 md:grid-cols-3 gap-4"
 };
 var _hoisted_9 = {
   "class": "flex items-center"
 };
-var _hoisted_10 = ["value"];
+var _hoisted_10 = ["value", "disabled"];
 var _hoisted_11 = {
   "class": "ml-2 text-sm text-gray-600"
 };
@@ -26652,6 +26652,13 @@ var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNo
 
 var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Submit ");
 
+var _hoisted_14 = {
+  "class": "text-sm text-gray-600"
+};
+var _hoisted_15 = {
+  key: 0,
+  "class": "ml-6 text-sm text-gray-600"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_jet_label = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-label");
 
@@ -26747,7 +26754,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               value: statusName,
               "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
                 return _ctx.formData.statusValue = $event;
-              })
+              }),
+              disabled: !_ctx.$page.props.isAdmin
             }, null, 8
             /* PROPS */
             , _hoisted_10), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, _ctx.formData.statusValue]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(statusName), 1
@@ -26758,7 +26766,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           ))])])];
         }),
         actions: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_action_message, {
+          return [_ctx.$page.props.isAdmin ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+            key: 0
+          }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_action_message, {
             on: _ctx.formData.recentlySuccessful,
             "class": "mr-3"
           }, {
@@ -26798,7 +26808,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
           }, 8
           /* PROPS */
-          , ["class", "disabled"])];
+          , ["class", "disabled"])], 64
+          /* STABLE_FRAGMENT */
+          )) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+            key: 1
+          }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, " Created " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.submission.created_at), 1
+          /* TEXT */
+          ), _ctx.submission.updated_at !== _ctx.submission.created_at ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_15, " Updated " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.submission.updated_at), 1
+          /* TEXT */
+          )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64
+          /* STABLE_FRAGMENT */
+          ))];
         }),
         _: 1
         /* STABLE */

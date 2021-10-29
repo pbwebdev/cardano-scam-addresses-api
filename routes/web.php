@@ -28,7 +28,7 @@ Route::prefix('submissions')->name('submissions')->group(function () {
     Route::inertia('/', 'Submission/Index');
     Route::inertia('/create', 'Submission/Create')->name('.create');
 
-    Route::middleware(['auth:sanctum', 'verified'])->get('/{submission}', function (Submission $submission) {
+    Route::get('/{submission}', function (Submission $submission) {
         $statusNames = Submission::STATUS_NAMES;
 
         return Inertia::render('Submission/Show', compact('submission', 'statusNames'));

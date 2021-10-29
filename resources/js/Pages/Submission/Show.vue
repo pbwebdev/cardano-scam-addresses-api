@@ -36,10 +36,11 @@
                     <div class="col-span-6">
                         <jet-label for="status" value="Status" />
 
-                        <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="mt-2 grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div v-for="statusName in statusNames" :key="statusName">
                                 <label class="flex items-center">
-                                    <input type="radio" :value="statusName" v-model="formData.statusValue" />
+                                    <input type="radio" :value="statusName" v-model="formData.statusValue"
+                                           :disabled="!$page.props.isAdmin" />
                                     <span class="ml-2 text-sm text-gray-600">{{ statusName }}</span>
                                 </label>
                             </div>
@@ -48,17 +49,29 @@
                 </template>
 
                 <template #actions>
-                    <jet-action-message :on="formData.recentlySuccessful" class="mr-3">
-                        Updated.
-                    </jet-action-message>
+                    <template v-if="$page.props.isAdmin">
+                        <jet-action-message :on="formData.recentlySuccessful" class="mr-3">
+                            Updated.
+                        </jet-action-message>
 
-                    <jet-action-message :on="formData.validationMessage" class="mr-3">
-                        {{ formData.validationMessage }}
-                    </jet-action-message>
+                        <jet-action-message :on="formData.validationMessage" class="mr-3">
+                            {{ formData.validationMessage }}
+                        </jet-action-message>
 
-                    <jet-button :class="{ 'opacity-25': formData.processing }" :disabled="formData.processing">
-                        Submit
-                    </jet-button>
+                        <jet-button :class="{ 'opacity-25': formData.processing }" :disabled="formData.processing">
+                            Submit
+                        </jet-button>
+                    </template>
+
+                    <template v-else>
+                        <div class="text-sm text-gray-600">
+                            Created {{ submission.created_at }}
+                        </div>
+
+                        <div class="ml-6 text-sm text-gray-600" v-if="submission.updated_at !== submission.created_at">
+                            Updated {{ submission.updated_at }}
+                        </div>
+                    </template>
                 </template>
             </jet-form-section>
         </div>
