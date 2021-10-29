@@ -33,11 +33,17 @@ class SubmissionRequest extends FormRequest
      */
     public function rules(): array
     {
+        $uniqueness = Rule::unique('submissions');
+
+        if ('update' === $this->route()->getActionMethod()) {
+            $uniqueness->ignore($this->get('transaction'), 'transaction');
+        }
+
         return [
             'transaction' => [
                 'required',
                 'string',
-                Rule::unique('submissions')->ignore($this->get('transaction'), 'transaction'),
+                $uniqueness,
                 new TransactionHash(),
             ],
             'description' => [
