@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\TransactionNotFoundException;
 use App\Http\Requests\SubmissionRequest;
 use App\Http\Resources\SubmissionCollection;
 use App\Http\Resources\SubmissionResource;
 use App\Models\Submission;
-use App\Traits\Serviceable;
+use App\Traits\Transactional;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\JsonResponse;
 
 class SubmissionController extends Controller
 {
-    use Serviceable;
+    use Transactional;
 
     /**
      * Create a new Wallet controller instance
@@ -49,9 +48,7 @@ class SubmissionController extends Controller
     {
         $data = $request->validated();
 
-        if (! $this->serviceProvider->getTransactionDetails($data['transaction'])) {
-            throw new TransactionNotFoundException();
-        }
+        $this->getTransactionDetails($data['transaction']);
 
         $submission = Submission::create($data);
 
@@ -86,9 +83,7 @@ class SubmissionController extends Controller
     {
         $data = $request->validated();
 
-        if (! $this->serviceProvider->getTransactionDetails($data['transaction'])) {
-            throw new TransactionNotFoundException();
-        }
+        $this->getTransactionDetails($data['transaction']);
 
         $data['status'] = array_search($data['status'], Submission::STATUS_NAMES, true);
 
