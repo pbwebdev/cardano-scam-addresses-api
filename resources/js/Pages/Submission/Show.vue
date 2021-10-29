@@ -16,6 +16,16 @@
                     Provided information
                 </template>
 
+                <template #aside>
+                    <p class="text-sm text-gray-600">
+                        Created {{ submission.created_at }}
+                    </p>
+
+                    <p class="text-sm text-gray-600" v-if="submission.updated_at !== submission.created_at">
+                        Updated {{ submission.updated_at }}
+                    </p>
+                </template>
+
                 <template #form>
                     <div class="col-span-6">
                         <jet-label for="transaction" value="Transaction Hash" />
@@ -48,30 +58,18 @@
                     </div>
                 </template>
 
-                <template #actions>
-                    <template v-if="$page.props.isAdmin">
-                        <jet-action-message :on="formData.recentlySuccessful" class="mr-3">
-                            Updated.
-                        </jet-action-message>
+                <template #actions v-if="$page.props.isAdmin">
+                    <jet-action-message :on="formData.recentlySuccessful" class="mr-3">
+                        Updated.
+                    </jet-action-message>
 
-                        <jet-action-message :on="formData.validationMessage" class="mr-3">
-                            {{ formData.validationMessage }}
-                        </jet-action-message>
+                    <jet-action-message :on="formData.validationMessage" class="mr-3">
+                        {{ formData.validationMessage }}
+                    </jet-action-message>
 
-                        <jet-button :class="{ 'opacity-25': formData.processing }" :disabled="formData.processing">
-                            Submit
-                        </jet-button>
-                    </template>
-
-                    <template v-else>
-                        <div class="text-sm text-gray-600">
-                            Created {{ submission.created_at }}
-                        </div>
-
-                        <div class="ml-6 text-sm text-gray-600" v-if="submission.updated_at !== submission.created_at">
-                            Updated {{ submission.updated_at }}
-                        </div>
-                    </template>
+                    <jet-button :class="{ 'opacity-25': formData.processing }" :disabled="formData.processing">
+                        Submit
+                    </jet-button>
                 </template>
             </jet-form-section>
         </div>
