@@ -23,8 +23,9 @@ trait Transactional
     {
         $senders = $this->getStakeAddress('inputs', $data);
         $receivers = $this->getStakeAddress('outputs', $data);
+        $suspects = $this->getSuspectStakes($senders, $receivers);
 
-        return compact('senders', 'receivers');
+        return compact('senders', 'receivers', 'suspects');
     }
 
     protected function getStakeAddress(string $type, $data): array
@@ -40,5 +41,18 @@ trait Transactional
         }
 
         return array_filter($addresses);
+    }
+
+    protected function getSuspectStakes(array $senders, array $receivers): array
+    {
+        if ($senders === $receivers) {
+            return [];
+        }
+
+        if (1 === count($receivers)) {
+            return $receivers;
+        }
+
+        return array_diff(array_keys($receivers), array_keys($senders));
     }
 }
