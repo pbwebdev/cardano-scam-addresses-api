@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SubmissionController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\WebsiteController;
 use Illuminate\Http\Request;
@@ -32,3 +33,5 @@ Route::apiResource('websites', WebsiteController::class)->only(['index', 'show']
 Route::middleware(['auth:sanctum'])->apiResource('submissions', SubmissionController::class)
     ->except(['index', 'show']);
 Route::apiResource('submissions', SubmissionController::class)->only(['index', 'show']);
+
+Route::get('/transaction', TransactionController::class);
